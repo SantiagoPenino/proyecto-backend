@@ -23,10 +23,9 @@ export class ProductManager {
 
   async #getMaxId() {
     try {
-      const products = await this.getProducts();
-      if (products.length === 0) return 0;
       let maxId = 0;
-      products.forEach((product) => {
+      const products = await this.getProducts();
+      products.map((product) => {
         if (product.id > maxId) {
           maxId = product.id;
         }
@@ -62,10 +61,10 @@ export class ProductManager {
     }
   }
 
-  async getProductById(productId) {
+  async getProductById(pid) {
     try {
       const products = await this.getProducts();
-      const product = products.find((product) => product.id === productId);
+      const product = products.find((product) => product.id === pid);
       if (product) {
         return product;
       } else {
@@ -83,7 +82,7 @@ export class ProductManager {
       if (index === -1) {
         return false;
       } else {
-        const prodUpdated = { id,...obj};
+        const prodUpdated = { id, ...obj };
         products[index] = prodUpdated;
       }
       await fs.promises.writeFile(this.path, JSON.stringify(products));

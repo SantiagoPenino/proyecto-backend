@@ -1,8 +1,8 @@
 import fs from "fs";
 
 export class CartManager {
-  constructor(path) {
-    this.path = path;
+  constructor() {
+    this.path = "./carts.json";
   }
 
   async getCarts() {
@@ -18,14 +18,18 @@ export class CartManager {
   }
 
   async #getMaxId() {
-    let maxId = 0;
-    const carts = await this.getCarts();
-    carts.map((cart) => {
-      if (cart.id > maxId) {
-        maxId = cart.id;
-      }
-    });
-    return maxId;
+    try {
+      let maxId = 0;
+      const carts = await this.getCarts();
+      carts.map((cart) => {
+        if (cart.id > maxId) {
+          maxId = cart.id;
+        }
+      });
+      return maxId;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async addCart() {
@@ -43,10 +47,10 @@ export class CartManager {
     }
   }
 
-  async getCartById() {
+  async getCartById(cid) {
     try {
       const carts = await this.getCarts();
-      const cart = carts.find((cart) => cart.id === id);
+      const cart = carts.find((c) => c.id === cid);
       if (!cart) {
         return false;
       }
@@ -56,22 +60,28 @@ export class CartManager {
     }
   }
 
-  async addProductToCart(idCart, idProd) {
-    const carts = await this.getCarts();
-    const cartExists = await this.getCartById(idCart);
-    if (cartExists) {
-      const prodExists = cartExists.products.find((prod) => prod.id === idProd);
-      if (prodExists) {
-        prodExists.quantity++;
+  async addProductToCart(cid, pid) {
+    try {
+      const carts = await this.getCarts();
+      const currentCart = await this.getCartById(cid);
+      if (!currentCart) {
+        return { error: "Cart not found" };
+      }
+      const currentProduct = currentCart.products.find((p) => p.id === pid);
+      if (currentProduct) {
+        currentProduct.quantity += 1;
       } else {
-        const prod = {
-          product: idProd,
+        const addedProduct = {
+          product: pid,
           quantity: 1,
         };
-        cartExists.products.push(prod);
+        currentCart.products.push(addedProduct);
       }
       await fs.promises.writeFile(this.path, JSON.stringify(carts));
-      return cartExists;
+      return currentCart;
+    } catch (error) {
+      console.log(error);
+      return { error: "Error adding product to cart" };
     }
   }
 }
