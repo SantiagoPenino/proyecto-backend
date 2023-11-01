@@ -32,7 +32,6 @@ router.get("/:id", async (req, res) => {
       res.status(404).json({ error: "Cart not found" });
     } else {
       res.status(200).json(cart);
-      return cart;
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -53,6 +52,7 @@ router.post("/:cid/product/:pid", async (req, res) => {
     await cartManager.addProductToCart(cid, pid);
     res.status(200).json({ message: "Product added to cart" });
   } catch (error) {
+    console.log(error);
     res.status(500).json({ error: error.message });
   }
 });

@@ -67,13 +67,13 @@ export class CartManager {
       if (!currentCart) {
         return { error: "Cart not found" };
       }
-      const currentProduct = currentCart.products.find((p) => p.id === pid);
+      const currentProduct = currentCart.products.find(p => p.id === pid);
       if (currentProduct) {
         currentProduct.quantity += 1;
       } else {
         const addedProduct = {
           product: pid,
-          quantity: 1,
+          quantity: 1
         };
         currentCart.products.push(addedProduct);
       }

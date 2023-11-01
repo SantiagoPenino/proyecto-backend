@@ -28,5 +28,16 @@
     "price": 80,
     "stock": 50,
     "category": "Refrescos"
+  },
+  {
+    "id": 4,
+    "status": true,
+    "title": "Producto de prueba Luis",
+    "description": "Este es un producto de prueba",
+    "code": "123956",
+    "price": 99.99,
+    "stock": 10,
+    "category": "Prueba",
+    "thumbnails": "url img"
   }
 ]
