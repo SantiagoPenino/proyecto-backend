@@ -12,8 +12,7 @@ export class CartManager {
         return JSON.parse(cartsJSON);
       } else return [];
     } catch (error) {
-      console.log(error);
-      return [];
+      return { error: "Error getting carts" };
     }
   }
 
@@ -28,7 +27,7 @@ export class CartManager {
       });
       return maxId;
     } catch (error) {
-      console.log(error);
+      return { error: "Error getting max id" };
     }
   }
 
@@ -43,7 +42,7 @@ export class CartManager {
       await fs.promises.writeFile(this.path, JSON.stringify(cartsFile));
       return cart;
     } catch (error) {
-      console.log(error);
+      return { error: "Error adding cart" };
     }
   }
 
@@ -56,31 +55,31 @@ export class CartManager {
       }
       return cart;
     } catch (error) {
-      console.log(error);
+      return { error: "Cart not found" };
     }
   }
 
   async addProductToCart(cid, pid) {
     try {
       const carts = await this.getCarts();
-      const currentCart = await this.getCartById(cid);
-      if (!currentCart) {
-        return { error: "Cart not found" };
+      const currentCart = await this.getCartById(Number(cid));
+      console.log(currentCart);
+      if (currentCart) {
+        const currentProduct = currentCart.products.find((p) => p.id === pid);
+        if (currentProduct) {
+          currentProduct.quantity + 1;
+        } else {
+          const addedProduct = {
+            product: pid,
+            quantity: 1,
+          };
+          currentCart.products.push(addedProduct);
+        }
+        await fs.promises.writeFile(this.path, JSON.stringify(carts));
+        console.log(currentCart);
+        return currentCart;
       }
-      const currentProduct = currentCart.products.find(p => p.id === pid);
-      if (currentProduct) {
-        currentProduct.quantity += 1;
-      } else {
-        const addedProduct = {
-          product: pid,
-          quantity: 1
-        };
-        currentCart.products.push(addedProduct);
-      }
-      await fs.promises.writeFile(this.path, JSON.stringify(carts));
-      return currentCart;
     } catch (error) {
-      console.log(error);
       return { error: "Error adding product to cart" };
     }
   }
