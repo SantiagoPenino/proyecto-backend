@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "status": true,
+    "title": "Sprite 1lt",
+    "description": "Refresco de Sprite",
+    "code": "SSS150",
+    "price": 80,
+    "stock": 50,
+    "category": "Refrescos"
+  }
+]

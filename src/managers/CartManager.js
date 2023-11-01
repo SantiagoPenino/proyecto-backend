@@ -63,22 +63,35 @@ export class CartManager {
     try {
       const carts = await this.getCarts();
       const currentCart = await this.getCartById(Number(cid));
+
       if (currentCart) {
-        const currentProduct = currentCart.products.find((p) => p.id === pid);
+        const currentProduct = currentCart.products.find(
+          (p) => p.product === Number(pid)
+        );
+
         if (currentProduct) {
-          currentProduct.quantity + 1;
+          currentProduct.quantity += 1;
         } else {
           const addedProduct = {
-            product: pid,
+            product: Number(pid),
             quantity: 1,
           };
           currentCart.products.push(addedProduct);
         }
+
+        const cartIndex = carts.findIndex((c) => c.id === Number(cid));
+
+        if (cartIndex !== -1) {
+          carts[cartIndex] = currentCart;
+        } else {
+          carts.push(currentCart);
+        }
+
         await fs.promises.writeFile(this.path, JSON.stringify(carts));
         return currentCart;
       }
     } catch (error) {
-      return { error: "Error adding product to cart" };
+      throw new Error("Error adding product to cart");
     }
   }
 }
