@@ -18,6 +18,7 @@ export class ProductManager {
       );
       if (duplicatedCode) {
         console.log("Duplicated code");
+        throw new Error("Duplicated code");
       }
       products.push(product);
       await fs.promises.writeFile(this.path, JSON.stringify(products));
@@ -73,7 +74,8 @@ export class ProductManager {
       if (product) {
         return product;
       } else {
-        console.error("Product not found...");
+        console.error("Product not found");
+        throw new Error("Product not found");
       }
     } catch (error) {
       throw new Error("Error getting product by id");
@@ -102,12 +104,10 @@ export class ProductManager {
       const updatedProducts = products.filter(
         (product) => product.id !== productId
       );
-
       if (products.length === updatedProducts.length) {
         console.error("Product not found...");
         return;
       }
-
       await fs.promises.writeFile(this.path, JSON.stringify(updatedProducts));
     } catch (error) {
       throw new Error("Error deleting product");

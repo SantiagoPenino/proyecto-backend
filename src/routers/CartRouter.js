@@ -44,19 +44,16 @@ router.post("/:cid/product/:pid", async (req, res) => {
     const cart = await cartManager.getCartById(Number(cid));
     const product = await productManager.getProductById(Number(pid));
     if (!cart) {
-      console.log("Cart not found");
       res.status(404).json({ error: "Cart not found" });
       return;
     }
     if (!product) {
-      console.log("Product not found");
       res.status(404).json({ error: "Product not found" });
       return;
     }
     await cartManager.addProductToCart(cid, pid);
-    res.status(200).json({ success: "Product added to cart" });
+    res.status(200).json(cart);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: error.message });
   }
 });
