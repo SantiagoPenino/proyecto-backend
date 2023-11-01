@@ -52,7 +52,8 @@ router.post("/:cid/product/:pid", async (req, res) => {
       return;
     }
     await cartManager.addProductToCart(cid, pid);
-    res.status(200).json(cart);
+    const updatedCart = await cartManager.getCartById(Number(cid));
+    res.status(200).json(updatedCart);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
