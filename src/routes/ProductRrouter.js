@@ -54,7 +54,7 @@ router.put("/:id", async (req, res) => {
     } else {
       await productManager.updateProduct(product, idNumber);
     }
-    res.status(200).json({ message: "Product updated" });
+    res.status(200).json({ success: "Product updated" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -65,7 +65,7 @@ router.delete("/:id", async (req, res) => {
     const { id } = req.params;
     const idNumber = Number(id);
     await productManager.deleteProduct(idNumber);
-    res.json({ message: "Product deleted" });
+    res.json({ success: "Product deleted" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

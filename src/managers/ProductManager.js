@@ -13,11 +13,17 @@ export class ProductManager {
         ...obj,
       };
       const products = await this.getProducts();
+      const duplicatedCode = products.find(
+        (product) => product.code === obj.code
+      );
+      if (duplicatedCode) {
+        console.log("Duplicated code");
+      }
       products.push(product);
       await fs.promises.writeFile(this.path, JSON.stringify(products));
       return product;
     } catch (error) {
-      return { error: "Error adding product" };
+      throw new Error("Error adding product");
     }
   }
 
@@ -32,7 +38,7 @@ export class ProductManager {
       });
       return maxId;
     } catch (error) {
-      return { error: "Error getting max id" };
+      throw new Error("Error getting max id");
     }
   }
 
@@ -43,7 +49,7 @@ export class ProductManager {
         return JSON.parse(productsJSON);
       } else return [];
     } catch (error) {
-      return { error: "Error getting products" };
+      throw new Error("Error getting products");
     }
   }
 
@@ -56,7 +62,7 @@ export class ProductManager {
         return products.slice(0, limit);
       }
     } catch (error) {
-      return { error: "Error getting products by limit" };
+      throw new Error("Error getting products by limit");
     }
   }
 
@@ -70,7 +76,7 @@ export class ProductManager {
         console.error("Product not found...");
       }
     } catch (error) {
-      return { error: "Error getting product by id" };
+      throw new Error("Error getting product by id");
     }
   }
 
@@ -86,7 +92,7 @@ export class ProductManager {
       }
       await fs.promises.writeFile(this.path, JSON.stringify(products));
     } catch (error) {
-      return { error: "Error updating product" };
+      throw new Error("Error updating product");
     }
   }
 
@@ -104,7 +110,7 @@ export class ProductManager {
 
       await fs.promises.writeFile(this.path, JSON.stringify(updatedProducts));
     } catch (error) {
-      return { error: "Error deleting product" };
+      throw new Error("Error deleting product");
     }
   }
 }

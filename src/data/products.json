@@ -1,12 +1,1 @@
-[
-  {
-    "id": 1,
-    "status": true,
-    "title": "Sprite 1lt",
-    "description": "Refresco de Sprite",
-    "code": "SSS150",
-    "price": 80,
-    "stock": 50,
-    "category": "Refrescos"
-  }
-]
+[{"id":1,"status":true,"title":"Sprite 1lt","description":"Refresco de Sprite","code":"SSS150","price":80,"stock":50,"category":"Refrescos"},{"id":2,"status":true,"title":"Sprite 2lt","description":"Refresco de Sprite","code":"SSS130","price":80,"stock":50,"category":"Refrescos"}]

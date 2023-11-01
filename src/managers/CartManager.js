@@ -12,7 +12,7 @@ export class CartManager {
         return JSON.parse(cartsJSON);
       } else return [];
     } catch (error) {
-      return { error: "Error getting carts" };
+      throw new Error("Error getting carts");
     }
   }
 
@@ -27,7 +27,7 @@ export class CartManager {
       });
       return maxId;
     } catch (error) {
-      return { error: "Error getting max id" };
+      throw new Error("Error getting max id");
     }
   }
 
@@ -42,7 +42,7 @@ export class CartManager {
       await fs.promises.writeFile(this.path, JSON.stringify(cartsFile));
       return cart;
     } catch (error) {
-      return { error: "Error adding cart" };
+      throw new Error("Error adding new cart");
     }
   }
 
@@ -55,7 +55,7 @@ export class CartManager {
       }
       return cart;
     } catch (error) {
-      return { error: "Cart not found" };
+      throw new Error("Error getting cart by id");
     }
   }
 
