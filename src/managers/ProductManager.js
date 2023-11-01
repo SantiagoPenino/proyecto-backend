@@ -1,8 +1,8 @@
 import fs from "fs";
 
 export class ProductManager {
-  constructor() {
-    this.path = "./products.json";
+  constructor(path) {
+    this.path = path;
   }
 
   async addProduct(obj) {
@@ -17,7 +17,7 @@ export class ProductManager {
       await fs.promises.writeFile(this.path, JSON.stringify(products));
       return product;
     } catch (error) {
-      console.log(error);
+      return { error: "Error adding product" };
     }
   }
 
@@ -32,7 +32,7 @@ export class ProductManager {
       });
       return maxId;
     } catch (error) {
-      console.log(error);
+      return { error: "Error getting max id" };
     }
   }
 
@@ -43,8 +43,7 @@ export class ProductManager {
         return JSON.parse(productsJSON);
       } else return [];
     } catch (error) {
-      console.log(error);
-      return [];
+      return { error: "Error getting products" };
     }
   }
 
@@ -57,7 +56,7 @@ export class ProductManager {
         return products.slice(0, limit);
       }
     } catch (error) {
-      console.log(error);
+      return { error: "Error getting products by limit" };
     }
   }
 
@@ -71,7 +70,7 @@ export class ProductManager {
         console.error("Product not found...");
       }
     } catch (error) {
-      console.log(error);
+      return { error: "Error getting product by id" };
     }
   }
 
@@ -87,7 +86,7 @@ export class ProductManager {
       }
       await fs.promises.writeFile(this.path, JSON.stringify(products));
     } catch (error) {
-      console.log(error);
+      return { error: "Error updating product" };
     }
   }
 
@@ -105,7 +104,7 @@ export class ProductManager {
 
       await fs.promises.writeFile(this.path, JSON.stringify(updatedProducts));
     } catch (error) {
-      console.log(error);
+      return { error: "Error deleting product" };
     }
   }
 }

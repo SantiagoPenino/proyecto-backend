@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { ProductManager } from "../ProductManager.js";
+import { ProductManager } from "../managers/ProductManager.js";
 import { productValidator } from "../middlewares/productValidator.js";
 
 const router = Router();
-const productManager = new ProductManager();
+const productManager = new ProductManager("../src/data/products.json");
 
 router.get("/", async (req, res) => {
   try {

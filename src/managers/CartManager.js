@@ -1,8 +1,8 @@
 import fs from "fs";
 
 export class CartManager {
-  constructor() {
-    this.path = "./carts.json";
+  constructor(path) {
+    this.path = path;
   }
 
   async getCarts() {
@@ -63,7 +63,6 @@ export class CartManager {
     try {
       const carts = await this.getCarts();
       const currentCart = await this.getCartById(Number(cid));
-      console.log(currentCart);
       if (currentCart) {
         const currentProduct = currentCart.products.find((p) => p.id === pid);
         if (currentProduct) {
@@ -76,7 +75,6 @@ export class CartManager {
           currentCart.products.push(addedProduct);
         }
         await fs.promises.writeFile(this.path, JSON.stringify(carts));
-        console.log(currentCart);
         return currentCart;
       }
     } catch (error) {
