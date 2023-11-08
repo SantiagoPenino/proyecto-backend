@@ -1,0 +1,9 @@
+<h2>Lista de productos</h2>
+
+{{#if products.length}}
+  {{#each products}}
+    <h3>{{this.title}}</h3>
+  {{/each}}
+{{else}}
+  <h3>No hay productos</h3>
+{{/if}}

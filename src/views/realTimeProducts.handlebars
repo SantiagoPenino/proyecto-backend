@@ -1,0 +1,12 @@
+{{log "La vista se esta recargando en tiempo real"}}
+<h2>Lista de productos en tiempo real</h2>
+{{#if products.length}}
+  {{#each products}}
+    <h3>{{this.title}}</h3>
+  {{/each}}
+{{else}}
+  <h3>No hay productos</h3>
+{{/if}}
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/index.js"></script>
