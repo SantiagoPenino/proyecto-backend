@@ -29,7 +29,6 @@ router.post("/realtimeproducts", async (req, res) => {
     await productManager.addProduct(product);
     ioServer.emit("newProduct", product);
     const products = await productManager.getProducts();
-    console.log(products)
     res.render("realTimeProducts", { products });
   } catch (error) {
     res.status(500).json({ error: error.message });
