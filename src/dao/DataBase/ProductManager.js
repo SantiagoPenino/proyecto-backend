@@ -1,4 +1,4 @@
-import { productModel } from "../models/productModel";
+import { productModel } from "../models/productModel.js";
 
 export class ProductManager {
   async addProduct(obj) {
@@ -9,13 +9,14 @@ export class ProductManager {
         throw new Error("Duplicated code");
       }
       const newProduct = new productModel({
-        id: (await getMaxId()) + 1,
+        id: (await this.getMaxId()) + 1,
         status: true,
         ...obj,
       });
       await newProduct.save();
       return newProduct;
     } catch (error) {
+      console.error(error)
       throw new Error("Error adding product");
     }
   }
@@ -69,7 +70,7 @@ export class ProductManager {
   async updateProduct(obj, id) {
     try {
       const updatedProduct = await productModel.findOneAndUpdate(
-        { id: id },
+        { _id: id },
         obj,
         { new: true }
       );
@@ -84,14 +85,15 @@ export class ProductManager {
 
   async deleteProduct(productId) {
     try {
-      const deletedProduct = await productModel.findOneAndDelete({
-        id: productId,
+      const deletedProduct = await productModel.findByIdAndDelete({
+        _id: productId,
       });
       if (!deletedProduct) {
         console.error("Product not found");
         return;
       }
     } catch (error) {
+      console.error(error)
       throw new Error("Error deleting product");
     }
   }

@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-export const productCollection = "product";
+export const productCollection = "products";
 
 export const productSchema = new Schema({
   title: { type: String, required: true },

@@ -1,9 +1,10 @@
 import { Router } from "express";
-import { ProductManager } from "../dao/FileSystem/ProductManager.js";
+// import { ProductManager } from "../dao/FileSystem/ProductManager.js";
+import { ProductManager } from "../dao/DataBase/ProductManager.js";
 import { productValidator } from "../middlewares/productValidator.js";
 
 const router = Router();
-const productManager = new ProductManager("../src/data/products.json");
+const productManager = new ProductManager();
 
 router.get("/", async (req, res) => {
   try {
@@ -63,8 +64,7 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const idNumber = Number(id);
-    await productManager.deleteProduct(idNumber);
+    await productManager.deleteProduct(id);
     res.json({ success: "Product deleted" });
   } catch (error) {
     res.status(500).json({ error: error.message });
