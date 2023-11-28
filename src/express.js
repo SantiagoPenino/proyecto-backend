@@ -18,6 +18,7 @@ server.engine("handlebars", handlebars.engine());
 server.set("views", __dirname + "/src/views");
 server.set("view engine", "handlebars");
 server.use("/", viewRouter);
+server.use("/chat", viewRouter);
 
 const httpServer = server.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`);

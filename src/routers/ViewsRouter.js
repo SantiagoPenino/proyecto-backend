@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ProductManager } from "../dao/FileSystem/ProductManager.js";
+import { ProductManager } from "../dao/filesystem/ProductManager.js";
 import { ioServer } from "../express.js";
 
 const router = Router();
@@ -33,5 +33,9 @@ router.post("/realtimeproducts", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+});
+
+router.get("/chat", (req, res) => {
+  res.render("chat");
 });
 export default router;

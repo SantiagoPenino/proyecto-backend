@@ -10,7 +10,7 @@ export const productSchema = new Schema({
   stock: { type: Number, required: true },
   status: { type: Boolean, default: true },
   category: { type: String, required: true },
-  thumbnail: { type: String, required: false },
+  thumbnail: { type: String },
 });
 
 export const productModel = model(productCollection, productSchema);
