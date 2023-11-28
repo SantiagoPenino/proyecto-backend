@@ -1,6 +1,5 @@
 import { Router } from "express";
-// import { ProductManager } from "../dao/FileSystem/ProductManager.js";
-import { ProductManager } from "../dao/mongodb/ProductManager.js";
+import { ProductManager } from "../dao/FileSystem/ProductManager.js";
 import { productValidator } from "../middlewares/productValidator.js";
 
 const router = Router();
@@ -24,7 +23,7 @@ router.get("/", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const product = await productManager.getProductById(Number(id));
+    const product = await productManager.getProductById(id);
     if (!product) {
       res.status(404).json({ error: "Product not found" });
     } else {
@@ -48,12 +47,11 @@ router.put("/:id", async (req, res) => {
   try {
     const product = { ...req.body };
     const { id } = req.params;
-    const idNumber = Number(id);
-    const productOk = await productManager.getProductById(idNumber);
+    const productOk = await productManager.getProductById(id);
     if (!productOk) {
       res.status(404).json({ error: "Product not found" });
     } else {
-      await productManager.updateProduct(product, idNumber);
+      await productManager.updateProduct(product, id);
     }
     res.status(200).json({ success: "Product updated" });
   } catch (error) {
