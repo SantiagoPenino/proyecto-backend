@@ -1,5 +1,5 @@
-import CartDao from "../dao/mongodb/CartDao";
-import ProductDao from "../dao/mongodb/ProductDao";
+import CartDao from "../dao/mongodb/CartDao.js";
+import ProductDao from "../dao/mongodb/ProductDao.js";
 
 const cartDao = new CartDao();
 const productDao = new ProductDao();
@@ -53,14 +53,3 @@ export const remove = async (id) => {
   }
 };
 
-export const addProduct = async (cid, pid) => {
-  try {
-    const cart = await cartDao.getById(cid);
-    const product = await productDao.getById(pid);
-    if (!cart || !product) return false;
-    const response = await cartDao.addProduct(cid, pid);
-    return response;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};

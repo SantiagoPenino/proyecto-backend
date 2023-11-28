@@ -50,15 +50,3 @@ export const update = async (req, res, next) => {
     throw new Error(error.message);
   }
 };
-
-export const addProduct = async (req, res, next) => {
-  try {
-    const cid = req.params.cid;
-    const pid = req.params.pid;
-    const response = await service.addProduct(cid, pid);
-    if (!response) throw new Error("Product could not be added");
-    res.status(200).json(response);
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};

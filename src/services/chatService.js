@@ -30,11 +30,3 @@ export const remove = async (id) => {
         throw new Error(error.message);
     }
 };
-
-export const removeMany = async () => {
-    try {
-        await message.removeMany();
-    } catch (error) {
-        throw new Error(error.message);
-    }
-};

@@ -29,12 +29,4 @@ export default class MessageManager {
       throw new Error("Error deleting message");
     }
   }
-
-  async removeMany() {
-    try {
-      await messageModel.deleteMany({});
-    } catch (error) {
-      throw new Error("Error deleting all messages");
-    }
-  }
 }
