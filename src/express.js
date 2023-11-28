@@ -1,3 +1,4 @@
+import "./db/connection.js";
 import express from "express";
 import productRouter from "./routers/productRrouter.js";
 import cartRouter from "./routers/CartRouter.js";
