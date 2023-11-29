@@ -12,8 +12,10 @@ if (!username) {
       }
     },
   }).then((input) => {
-    username = input.value;
-    socketClient.emit("newUser", username);
+    if (input.value) {
+      username = input.value;
+      socketClient.emit("newUser", username);
+    }
   });
 }
 
@@ -24,7 +26,7 @@ const actions = document.getElementById("actions");
 
 send.addEventListener("click", () => {
   socketClient.emit("chat:message", {
-    username,
+    username: username,
     message: message.value,
   });
   message.value = "";
@@ -35,29 +37,14 @@ socketClient.on("messages", (data) => {
   const chatRender = data
     .map((message) => {
       return `
-    <p class="message">
+    <div class="message">
       <strong>${message.username}</strong>:
       <p>${message.message}</p>
-    </p>
+    </div>
     `;
     })
     .join(" ");
   output.innerHTML = chatRender;
-});
-
-socketClient.on("newUser", (username) => {
-  Toastify({
-    text: `${username} has joined the chat`,
-    duration: 3000,
-    newWindow: true,
-    close: true,
-    gravity: "top",
-    position: "right",
-    stopOnFocus: true,
-    style: {
-      background: "linear-gradient(to right, #00b09b, #96c93d)",
-    },
-  }).showToast();
 });
 
 message.addEventListener("keypress", () => {
@@ -66,4 +53,8 @@ message.addEventListener("keypress", () => {
 
 socketClient.on("chat:typing", (data) => {
   actions.innerHTML = `<p>${data} is typing a message...</p>`;
+});
+
+window.addEventListener("beforeunload", () => {
+  socketClient.disconnect();
 });

@@ -6,7 +6,7 @@ export default class MessageManager {
       const response = await messageModel.create(obj);
       return response;
     } catch (error) {
-      throw new Error("Message could not be created");
+      throw new Error("Message could not be created" + error.message);
     }
   }
 
@@ -16,17 +16,6 @@ export default class MessageManager {
       return response;
     } catch (error) {
       throw new Error("Error getting all messages");
-    }
-  }
-  async remove(id) {
-    try {
-      const response = await messageModel.findOneAndDelete({ id });
-      if (!response) {
-        throw new Error(`Message ${id} not found`);
-      }
-      return response;
-    } catch (error) {
-      throw new Error("Error deleting message");
     }
   }
 }
