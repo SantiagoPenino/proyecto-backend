@@ -12,7 +12,7 @@ export default class MessageManager {
 
   async getAll() {
     try {
-      const response = await messageModel.find({});
+      const response = await messageModel.find();
       return response;
     } catch (error) {
       throw new Error("Error getting all messages");
@@ -24,7 +24,7 @@ export default class MessageManager {
       if (!response) {
         throw new Error(`Message ${id} not found`);
       }
-      return deletedMsg;
+      return response;
     } catch (error) {
       throw new Error("Error deleting message");
     }

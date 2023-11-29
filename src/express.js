@@ -6,6 +6,8 @@ import productRouter from "./routes/productRouter.js";
 import { Server } from "socket.io";
 import { __dirname } from "../utils.js";
 import handlebars from "express-handlebars";
+import MessageManager from "./dao/mongodb/ChatDao.js";
+const messageManager = new MessageManager();
 
 const persistence = "MONGO";
 const server = express();
@@ -31,13 +33,23 @@ if (persistence === "MONGO") await initMongoDB();
 const httpServer = server.listen(PORT, () => {
   console.log(`Server running on port: ${PORT}`);
 });
-export const ioServer = new Server(httpServer);
+export const socketServer = new Server(httpServer);
 
-ioServer.on("connection", async (socket) => {
+socketServer.on("connection", async (socket) => {
   console.log(`🟢 Client connected ${socket.id}`);
+  socketServer.emit("messages", await messageManager.getAll());
   socket.on("disconnect", () => {
     console.log(`🔴 Client disconnected ${socket.id}`);
   });
+  socket.on("newUser", (user) => console.log(`⏩ ${user} has connected`));
+  socket.on("chat:message", async (message) => {
+    await messageManager.create(message);
+    socketServer.emit("messages", await messageManager.getAll());
+  });
+  socket.on("newUser", (user) => {
+    socket.broadcast.emit("newUser", user);
+  });
+  socket.on("chat:typing", (data) => {
+    socket.broadcast.emit("chat:typing", data);
+  });
 });
-
-

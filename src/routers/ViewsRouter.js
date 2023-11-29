@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ProductManager } from "../dao/FileSystem/ProductManager.js";
-import { ioServer } from "../express.js";
+import { socketServer } from "../express.js";
 
 const router = Router();
 const productManager = new ProductManager("../src/data/products.json");
@@ -27,7 +27,7 @@ router.post("/realtimeproducts", async (req, res) => {
   try {
     const product = req.body;
     await productManager.addProduct(product);
-    ioServer.emit("newProduct", product);
+    socketServer.emit("newProduct", product);
     const products = await productManager.getProducts();
     res.render("realTimeProducts", { products });
   } catch (error) {
