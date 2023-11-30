@@ -1,4 +1,5 @@
 import { cartModel } from "./models/cartModel.js";
+import { productModel } from "./models/productModel.js";
 
 export default class CartDao {
   async create(obj) {
@@ -43,6 +44,40 @@ export default class CartDao {
       return response;
     } catch (error) {
       throw new Error(error.message);
+    }
+  }
+
+  async addProductToCart(cid, pid) {
+    try {
+      const currentCart = await cartModel.findById(cid);
+
+      if (currentCart) {
+        const currentProductIndex = currentCart.products.findIndex(
+          (p) => p.product.toString() === pid
+        );
+
+        if (currentProductIndex !== -1) {
+          currentCart.products[currentProductIndex].quantity += 1;
+        } else {
+          const productToAdd = await productModel.findById(pid);
+          if (productToAdd) {
+            currentCart.products.push({
+              product: productToAdd._id,
+              quantity: 1,
+            });
+          } else {
+            throw new Error("Product not found");
+          }
+        }
+
+        await currentCart.save();
+
+        return currentCart;
+      } else {
+        throw new Error("Cart not found");
+      }
+    } catch (error) {
+      throw new Error("Error adding product to cart: " + error.message);
     }
   }
 }
