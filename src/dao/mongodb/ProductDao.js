@@ -12,7 +12,7 @@ export default class ProductDao {
 
   async getAll() {
     try {
-      const response = await productModel.find({});
+      const response = await productModel.find({}).lean();
       return response;
     } catch (error) {
       throw new Error("Error getting products");

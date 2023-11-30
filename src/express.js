@@ -22,6 +22,7 @@ server.engine("handlebars", handlebars.engine());
 server.set("views", __dirname + "/src/views");
 server.set("view engine", "handlebars");
 server.use("/", viewsRouter);
+server.use("/realtimeproducts", viewsRouter);
 server.use("/chat", viewsRouter);
 server.use((err, req, res, next) => {
   console.error(err);
