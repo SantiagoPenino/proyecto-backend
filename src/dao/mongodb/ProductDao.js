@@ -47,4 +47,18 @@ export default class ProductDao {
       throw new Error("Error deleting product");
     }
   }
+
+  async filter(category) {
+    try {
+      const response = await productModel.aggregate([
+        {
+          $match: { category: category },
+        },
+        { $sort: { price: 1 } },
+      ]);
+      return response;
+    } catch (error) {
+      throw new Error("Error filter products");
+    }
+  }
 }

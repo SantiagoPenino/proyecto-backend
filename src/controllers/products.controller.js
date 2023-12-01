@@ -51,3 +51,13 @@ export const remove = async (req, res, next) => {
     next(error.message);
   }
 };
+
+export const filter = async (req, res, next) => {
+  try {
+    const { category } = req.query;
+    const response = await service.filter(category);
+    res.status(200).json(response);
+  } catch (error) {
+    next(error.message);
+  }
+};
