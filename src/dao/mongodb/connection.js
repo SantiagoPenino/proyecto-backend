@@ -1,6 +1,6 @@
 import { connect } from "mongoose";
 
-const MONGO_URL =
+export const MONGO_URL =
   "mongodb+srv://admin:admin@cluster0.jwey7jj.mongodb.net/ecommerce?retryWrites=true&w=majority";
 export const initMongoDB = async () => {
   try {
@@ -10,3 +10,5 @@ export const initMongoDB = async () => {
     console.log("Error connecting to MongoDB");
   }
 };
+
+
