@@ -1,9 +1,9 @@
 import express from "express";
 import { initMongoDB, MONGO_URL } from "./dao/mongodb/connection.js";
-import loginRouter from "./routes/loginRouter.js";
 import viewsRouter from "./routes/ViewsRouter.js";
 import cartRouter from "./routes/cartRouter.js";
 import productRouter from "./routes/productRouter.js";
+import userRouter from "./routes/userRouter.js";
 import { Server } from "socket.io";
 import { __dirname } from "../utils.js";
 import handlebars from "express-handlebars";
@@ -17,6 +17,7 @@ const PORT = 8080;
 const mongoStoreOptions = {
   store: MongoStore.create({
     mongoUrl: MONGO_URL,
+    ttl: 120,
   }),
   secret: "coderhouse",
   resave: false,
@@ -31,7 +32,7 @@ server.set("views", __dirname + "/src/views");
 server.set("view engine", "handlebars");
 server.use("/api/products", productRouter);
 server.use("/api/carts", cartRouter);
-server.use("/login", loginRouter);
+server.use("/users", userRouter);
 server.use("/", viewsRouter);
 server.use(session(mongoStoreOptions));
 server.use(cookieParser());
