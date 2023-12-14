@@ -1,11 +1,13 @@
 import { Router } from "express";
 import { ProductManager } from "../dao/FileSystem/ProductManager.js";
 import ProductDao from "../dao/mongodb/ProductDao.js";
+import UserDao from "../dao/mongodb/userDao.js";
 import { socketServer } from "../express.js";
 
 const router = Router();
 const productManager = new ProductManager("../src/data/products.json");
 const productDao = new ProductDao();
+const userDao = new UserDao();
 
 router.get("/index", async (req, res) => {
   try {
