@@ -1,52 +1,81 @@
-import * as service from "../services/cartService.js";
+import CartService from "../services/cartService.js";
+import Controllers from "../controllers/class.controllers.js";
+import { HttpResponse, dictionary } from "../utils/httpResponse.js";
 
-export const getAll = async (req, res, next) => {
-  try {
-    const carts = await service.getAll();
-    res.status(200).json(carts);
-  } catch (error) {
-    throw new Error(error.message);
+const httpResponse = new HttpResponse();
+const service = new CartService();
+export default class CartController extends Controllers {
+  constructor() {
+    super(service);
   }
-};
 
-export const getById = async (req, res, next) => {
-  try {
-    const cart = await service.getById(req.params.id);
-    if (!cart) res.status(404).json("Cart not found");
-    res.status(200).json(cart);
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
+  remove = async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const deletedCart = await service.remove(id);
+      return !deletedCart
+        ? httpResponse.NOT_FOUND(res, dictionary.ERROR_DELETE_CART)
+        : httpResponse.OK(res, deletedCart);
+    } catch (error) {
+      next(error);
+    }
+  };
 
-export const create = async (req, res, next) => {
-  try {
-    const newCart = await service.create();
-    if (!newCart) throw new Error("Cart could not be created");
-    res.status(200).json(newCart);
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
+  addProductToCart = async (req, res, next) => {
+    try {
+      const { cartId } = req.params;
+      const { itemId } = req.params;
+      const addProdToUserCart = await service.addProductToCart(cartId, itemId);
+      return !addProdToUserCart
+        ? httpResponse.NOT_FOUND(res, dictionary.ERROR_ADD_ITEM_TO_CART)
+        : httpResponse.OK(res, addProdToUserCart);
+    } catch (error) {
+      next(error);
+    }
+  };
 
-export const remove = async (req, res, next) => {
-  try {
-    const id = req.params.id;
-    const deletedCart = await service.remove(id);
-    if (!deletedCart) throw new Error("Cart could not be deleted");
-    res.status(200).json(deletedCart);
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
+  removeProductToCart = async (req, res, next) => {
+    try {
+      const { cartId } = req.params;
+      const { itemId } = req.params;
+      const deleteProdToUserCart = await service.removeProductToCart(
+        cartId,
+        itemId
+      );
+      return !deleteProdToUserCart
+        ? httpResponse.NOT_FOUND(res, dictionary.ERROR_DELETE_ITEM_TO_CART)
+        : httpResponse.OK(res, deleteProdToUserCart);
+    } catch (error) {
+      next(error);
+    }
+  };
+  updateProductQuantityToCart = async (req, res, next) => {
+    try {
+      const { cartId } = req.params;
+      const { itemId } = req.params;
+      const { quantity } = req.body;
+      const updateProductQuantity = await service.updateProductQuantityToCart(
+        cartId,
+        itemId,
+        quantity
+      );
+      return !updateProductQuantity
+        ? httpResponse.NOT_FOUND(res, "Error updating product quantity in cart")
+        : httpResponse.OK(res, updateProductQuantity);
+    } catch (error) {
+      next(error);
+    }
+  };
 
-export const update = async (req, res, next) => {
-  try {
-    const id = req.params.id;
-    const updatedCart = await service.update(req.body, id);
-    if (!updatedCart) throw new Error("Cart could not be updated");
-    res.status(200).json(updatedCart);
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
+  emptyCart = async (req, res, next) => {
+    try {
+      const { cartId } = req.params;
+      const emptyCart = await service.emptyCart(cartId);
+      return !emptyCart
+        ? httpResponse.NOT_FOUND(res, "Error emptying cart")
+        : httpResponse.OK(res, emptyCart);
+    } catch (error) {
+      next(error);
+    }
+  };
+}

@@ -1,57 +1,41 @@
-import ProductDao from "../dao/mongodb/ProductDao.js";
+import Services from "./classService.js";
+import ProductRepository from "../persistence/repository/productRepository.js";
+import persistence from "../persistence/repository/persistence.js";
+import { generateProduct } from "../utils/utils";
 
-const productDao = new ProductDao();
+const { productDao } = persistence;
+const productRepository = new ProductRepository(productDao);
 
-export const getAll = async () => {
-  try {
-    const products = await productDao.getAll();
-    return products;
-  } catch (error) {
-    throw new Error(`Error en getAll: ${error.message}`);
+export default class ProductService extends Services {
+  constructor() {
+    super(productDao);
   }
-};
 
-export const getById = async (id) => {
-  try {
-    const product = await productDao.getById(id);
-    return product;
-  } catch (error) {
-    throw new Error(`Error getById: ${error.message}`);
-  }
-};
+  createMockProduct = async (quantity = 100) => {
+    try {
+      const productsArray = Array.from({ length: quantity }, generateProduct());
+      const products = await productDao.create(productsArray);
+      return products;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 
-export const create = async (obj) => {
-  try {
-    const newProduct = await productDao.create(obj);
-    return newProduct;
-  } catch (error) {
-    throw new Error(`Error create: ${error.message}`);
-  }
-};
+  createProduct = async (product) => {
+    try {
+      const newProduct = await productRepository.createProduct(product);
+      return newProduct || false;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 
-export const update = async (id, obj) => {
-  try {
-    const updatedProduct = await productDao.update(obj, id);
-    return updatedProduct;
-  } catch (error) {
-    throw new Error(`Error update: ${error.message}`);
-  }
-};
-
-export const remove = async (id) => {
-  try {
-    const deletedProduct = await productDao.remove(id);
-    return deletedProduct;
-  } catch (error) {
-    throw new Error(`Error remove: ${error.message}`);
-  }
-};
-
-export const filter = async (category) => {
-  try {
-    const products = await productDao.filter(category);
-    return products;
-  } catch (error) {
-    throw new Error(`Error aggregation1: ${error.message}`);
-  }
-};
+  getProductById = async (id) => {
+    try {
+      const product = await productRepository.getProdudctById(id);
+      return product || false;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+}

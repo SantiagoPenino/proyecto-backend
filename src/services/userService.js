@@ -1,30 +1,47 @@
-import UserDao from "../dao/mongodb/userDao.js";
+import Services from "./classService.js";
+import persistence from "../persistence/repository/persistence.js";
+import { sendMail } from "./mailService.js";
 
-const userDao = new UserDao();
+const { userDao } = persistence;
 
-export const findByEmail = async (email) => {
+export default class UserService extends Services {
+  constructor() {
+    super(userDao);
+  }
+
+  register = async (user) => {
     try {
-        const response = await userDao.findByEmail(email);
-        return response;
+      const response = await userDao.register(user);
+      await sendMail(user, "register");
+      return response;
     } catch (error) {
-        throw new Error("Error getting user by email");
+      throw new Error(error);
     }
-};
+  };
 
-export const login = async (user) => {
+  login = async (user) => {
     try {
-        const response = await userDao.login(user);
-        return response;
+      return await this.dao.login(user);
     } catch (error) {
-        throw new Error("Error getting user by email");
+      throw new Error(error);
     }
-};
+  };
 
-export const create = async (user) => {
+  resetPassword = async (user) => {
     try {
-        const response = await userDao.create(user);
-        return response;
+      const token = await this.dao.resetPassword(user);
+      return token ? await sendMail(user, "resetPassword", token) : false;
     } catch (error) {
-        throw new Error("Error adding user");
+      throw new Error(error);
     }
-};
+  };
+
+  updatePassword = async (user, password) => {
+    try {
+      const response = await this.dao.updatePassword(user, password);
+      return response || false;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+}
