@@ -7,33 +7,41 @@ const transporter = createTransport({
   secure: true,
   auth: { user: config.EMAIL, pass: config.PASSWORD },
 });
-
-const createRegisterMessage = (name) => {
-  return `<h2>Hola ${name}, Bienvenido, ya estás registrado</h2>`;
+const createRegisterMessage = (firstName) => {
+  return `<h2>Hola ${firstName}, Bienvenido, ya estás registrado</h2>`;
 };
-
-const createResetPasswordMessage = (name) => {
-  return `<h2>Hola ${name}, has solicitado un cambio de contraseña</h2>`;
+const createResetPasswordMessage = (firstName) => {
+  return `<h2>Hola ${firstName}, has solicitado un cambio de contraseña</h2>`;
 };
-
+const createInactiveMessage = (firstName) => {
+  return `<h2>Hola ${firstName}, tu cuenta ha sido desactivada</h2>`;
+};
+const createDeletedProductMessage = (firstName) => {
+  return `<h2>Hola ${firstName}, tu producto ha sido eliminado</h2>`;
+};
 export const sendMail = async (user, service, token = null) => {
   try {
-    const { name, email } = user;
+    const { firstName, email } = user;
     let message = "";
     let subject = "";
 
     switch (service) {
       case "register":
-        message = createRegisterMessage(name);
+        message = createRegisterMessage(firstName);
         subject = "Registro exitoso";
         break;
-
       case "resetPassword":
-        message = createResetPasswordMessage(name);
+        message = createResetPasswordMessage(firstName);
         subject = "Recupera tu contraseña";
         break;
-      default:
-        throw new Error("Service not found");
+      case "inactiveUser":
+        message = createInactiveMessage(firstName);
+        subject = "Tu cuenta ha sido desactivada";
+        break;
+      case "deleteProduct":
+        message = createDeletedProductMessage(firstName);
+        subject = "Tu producto ha sido eliminado";
+        break;
     }
     const gmailSettings = {
       from: config.EMAIL,

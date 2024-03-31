@@ -26,8 +26,14 @@ export default class UserMongoDao extends MongoDao {
       const { email, password } = user;
       const userExists = await this.model.findOne({ email });
       return !userExists
-        ? await this.model.create({ ...user, password: createHash(password) })
-        : null;
+        ? email === "admin@coder.com" && password === "admin"
+          ? await this.model.create({
+              ...user,
+              password: createHash(password),
+              role: "admin",
+            })
+          : await this.model.create({ ...user, password: createHash(password) })
+        : false;
     } catch (error) {
       throw new Error(error);
     }
@@ -36,9 +42,11 @@ export default class UserMongoDao extends MongoDao {
   login = async (user) => {
     try {
       const { email, password } = user;
-      const userExists = await this.model.findOne({ email });
-      return userExists && isValidPassword(userExists, password)
-        ? this.newToken(userExists, "30m")
+      const userExists = await this.model.getByEmail({ email });
+      return userExists
+        ? isValidPassword(userExists, password)
+          ? { token: this.generateToken(userExists), userId: userExists._id }
+          : false
         : false;
     } catch (error) {
       throw new Error(error);
@@ -67,6 +75,32 @@ export default class UserMongoDao extends MongoDao {
       return isValidPassword(user, password)
         ? false
         : await this.update(user._id, { password: createHash(password) });
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
+  updateLastConnection = async (userId) => {
+    try {
+      const currentDate = new Date();
+      await this.model.findByIdAndUpdate(userId, {
+        lastConnection: currentDate,
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+  removeInactive = async () => {
+    try {
+      const inactiveUser = await this.model.find({
+        lastConnection: {
+          $lt: new Date(Date.now() - 1000 * 60 * 60 * 24),
+        },
+      });
+      await this.model.deleteMany({
+        _id: { $in: inactiveUser.map((user) => user._id) },
+      });
+      return inactiveUser;
     } catch (error) {
       throw new Error(error);
     }

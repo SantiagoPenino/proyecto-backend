@@ -3,11 +3,11 @@ import { Schema, model } from "mongoose";
 const userCatalog = "users";
 
 const UserSchema = new Schema({
-  name: {
+  firstName: {
     type: String,
     required: true,
   },
-  last_name: {
+  lastName: {
     type: String,
     required: true,
   },
@@ -26,9 +26,6 @@ const UserSchema = new Schema({
     type: String,
     default: "user",
   },
-  image: {
-    type: String,
-  },
   isGithub: {
     type: Boolean,
     default: false,
@@ -36,6 +33,10 @@ const UserSchema = new Schema({
   isGoogle: {
     type: Boolean,
     default: false,
+  },
+  lastConnection: {
+    type: Date,
+    default: Date.now,
   },
 });
 

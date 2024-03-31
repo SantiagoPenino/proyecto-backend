@@ -2,7 +2,6 @@ import { dirname } from "path";
 import { fileURLToPath } from "url";
 import bcryptjs from "bcryptjs";
 import MongoStore from "connect-mongo";
-import { es, fakerES } from "@faker-js/faker";
 import config from "../config/config.js";
 
 export const mongoStoreOptions = {

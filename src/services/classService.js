@@ -21,20 +21,20 @@ export default class Services {
     }
   };
 
-  create = async (item) => {
+  create = async (obj) => {
     try {
-      const response = await this.dao.create(item);
+      const response = await this.dao.create(obj);
       return response || false;
     } catch (error) {
       throw new Error(error);
     }
   };
 
-  update = async (id, item) => {
+  update = async (id, obj) => {
     try {
       const response = await this.dao.update(id);
       if (!response) return false;
-      await this.dao.update(id, item);
+      await this.dao.update(id, obj);
     } catch (error) {
       throw new Error(error);
     }

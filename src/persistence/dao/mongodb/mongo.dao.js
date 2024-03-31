@@ -3,6 +3,13 @@ export default class MongoDao {
     this.model = model;
   }
 
+  create = async (obj) => {
+    try {
+      return await this.model.create(obj);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
   getAll = async () => {
     try {
       return await this.model.find();
@@ -18,9 +25,9 @@ export default class MongoDao {
       throw new Error(error);
     }
   };
-  update = async (id, data) => {
+  update = async (id, obj) => {
     try {
-      return await this.model.updateOne({ _id: id }, data);
+      return await this.model.findByIdAndUpdate(id, obj, { new: true });
     } catch (error) {
       throw new Error(error);
     }
@@ -28,7 +35,7 @@ export default class MongoDao {
 
   delete = async (id) => {
     try {
-      return await this.model.deleteOne({ _id: id });
+      return await this.model.findByIdAndDelete({ id });
     } catch (error) {
       throw new Error(error);
     }

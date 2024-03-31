@@ -44,4 +44,22 @@ export default class UserService extends Services {
       throw new Error(error);
     }
   };
+  lastConnection = async (user) => {
+    try {
+      await userDao.lastConnection(user);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+  removeInactive = async () => {
+    try {
+      const inactiveUser = await userDao.removeInactive();
+      inactiveUser.forEach((user) => {
+        sendMail(user, "removeInactive");
+      });
+      return inactiveUser;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
 }

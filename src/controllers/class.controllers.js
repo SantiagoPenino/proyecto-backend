@@ -1,5 +1,4 @@
-import { HttpResponse } from "../utils/httpResponse.js";
-import { dictionary } from "../utils/httpResponse.js";
+import { HttpResponse, dictionary } from "../utils/httpResponse.js";
 
 const httpResponse = new HttpResponse();
 
@@ -11,7 +10,9 @@ export default class Controllers {
   getAll = async (req, res, next) => {
     try {
       const response = await this.service.getAll();
-      return httpResponse.OK(res, response);
+      return !items
+        ? httpResponse.ServerError(res, dictionary.ERROR_GET_ALL)
+        : httpResponse.OK(res, items);
     } catch (error) {
       next(error);
     }
@@ -21,9 +22,9 @@ export default class Controllers {
     try {
       const { id } = req.params;
       const response = await this.service.getById(id);
-      return item
-        ? httpResponse.OK(res, response)
-        : httpResponse.NOT_FOUND(res, "Item not found");
+      return !item
+        ? httpResponse.NOT_FOUND(res, dictionary.ERROR_FIND_ITEM)
+        : httpResponse.OK(res, item);
     } catch (error) {
       next(error);
     }
@@ -44,13 +45,11 @@ export default class Controllers {
     try {
       const { id } = req.params;
       const response = await this.service.getById(id);
-      const itemUpdated = !response
+      return !response
         ? httpResponse.NOT_FOUND(res, dictionary.ERROR_UPDATE_ITEM)
-        : await this.service.update(id, req.body);
-
-      return !item
-        ? httpResponse.NOT_FOUND(res, dictionary.ERROR_UPDATE_ITEM)
-        : httpResponse.OK(res, itemUpdated);
+        : await this.service
+            .update(id, req.body)
+            .then((updateItem) => httpResponse.Ok(res, updateItem));
     } catch (error) {
       next(error);
     }
@@ -60,7 +59,7 @@ export default class Controllers {
     try {
       const { id } = req.params;
       const response = await this.service.getById(id);
-      const itemUpdated = !item
+      const itemUpdated = !response
         ? httpResponse.NOT_FOUND(res, dictionary.ERROR_DELETE_ITEM)
         : await this.service.remove(id);
 

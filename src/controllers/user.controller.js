@@ -1,13 +1,13 @@
 import Controllers from "./class.controllers.js";
-import UserService from "../services/user.service.js";
+import UserService from "../services/userService.js";
 import { HttpResponse, dictionary } from "../utils/httpResponse.js";
 
-const HttpResponse = new HttpResponse();
-const UserService = new UserService();
+const httpResponse = new HttpResponse();
+const service = new UserService();
 
 export default class UserController extends Controllers {
   constructor() {
-    super(UserService);
+    super(service);
   }
 
   register = async (req, res, next) => {
@@ -25,8 +25,8 @@ export default class UserController extends Controllers {
     try {
       const userExists = await UserService.login(req.body);
       return !userExists
-        ? HttpResponse.UNAUTHORIZED(res, dictionary.ERROR_LOGIN)
-        : HttpResponse.OK(res, userExists);
+        ? httpResponse.UNAUTHORIZED(res, dictionary.ERROR_LOGIN)
+        : httpResponse.OK(res, userExists);
     } catch (error) {
       next(error);
     }
@@ -34,8 +34,8 @@ export default class UserController extends Controllers {
 
   profile = async (req, res, next) => {
     try {
-      const { name, lastName, email, role } = req.user;
-      return HttpResponse.OK(res, { name, lastName, email, role });
+      const { firstName, lastName, email, role } = req.user;
+      return httpResponse.OK(res, { firstName, lastName, email, role });
     } catch (error) {
       next(error);
     }
@@ -60,13 +60,24 @@ export default class UserController extends Controllers {
         body: { password },
         cookies: { passwordToken },
       } = req;
-      const updatePassword = await UserService.updatePassword(user, password);
+      const updatedPassword = await service.updatePassword(user, password);
       return !passwordToken
-        ? HttpResponse.FORBIDDEN(res, dictionary.ERROR_TOKEN)
+        ? httpResponse.FORBIDDEN(res, dictionary.ERROR_TOKEN)
         : !updatePassword
-        ? HttpResponse.NOT_FOUND(res, dictionary.ERROR_PASSWORD)
+        ? httpResponse.NOT_FOUND(res, dictionary.ERROR_PASSWORD)
         : (res.clearCookie("passwordToken"),
-          HttpResponse.OK(res, updatePassword));
+          httpResponse.OK(res, updatedPassword));
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  removeInactive = async (req, res, next) => {
+    try {
+      const deletedUser = await service.removeInactive();
+      return !deletedUser
+        ? httpResponse.NOT_FOUND(res, dictionary.ERROR_DELETE_ITEM)
+        : httpResponse.OK(res, deletedUser);
     } catch (error) {
       next(error);
     }

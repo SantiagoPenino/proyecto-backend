@@ -35,7 +35,7 @@ export default class TicketService extends Services {
       });
 
       cart.products = [];
-      await cart.save();
+      cart.save();
       return ticket;
     } catch (error) {
       throw new Error(error);

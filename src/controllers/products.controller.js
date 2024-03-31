@@ -1,46 +1,45 @@
 import Controllers from "./class.controllers.js";
-import ProductService from "../services/products.service.js";
+import ProductService from "../services/productsService.js";
 import { HttpResponse, dictionary } from "../utils/httpResponse.js";
 
-const HttpResponse = new HttpResponse();
+const httpResponse = new HttpResponse();
+const service = new ProductService();
 
 export default class ProductController extends Controllers {
   constructor() {
-    super(ProductService);
+    super(service);
   }
-
-  createMockProduct = async (req, res, next) => {
-    try {
-      const { quantity } = req.query;
-      const response = await ProductService.createMockProduct(quantity);
-      return !response
-        ? HttpResponse.NOT_FOUND(res, dictionary.ERROR_CREATE_ITEM)
-        : HttpResponse.OK(res, response);
-    } catch (error) {
-      next(error);
-    }
-  };
 
   createProduct = async (req, res, next) => {
     try {
-      const newProduct = await ProductService.createProduct(req.body);
+      const { email } = req.user;
+      const newProduct = await service.createProduct(req.body, email);
       return !newProduct
         ? HttpResponse.NOT_FOUND(res, dictionary.ERROR_CREATE_ITEM)
         : HttpResponse.OK(res, newProduct);
     } catch (error) {
       next(error);
     }
+  };
 
-    getProductById = async (req, res, next) => {
-      try {
-        const { id } = req.params;
-        const response = await ProductService.getProductById(id);
-        return !response
-          ? HttpResponse.NOT_FOUND(res, dictionary.ERROR_FIND_ITEM)
-          : HttpResponse.OK(res, response);
-      } catch (error) {
-        next(error);
-      }
-    };
+  remove = async (req, res, next) => {
+    try {
+      const { email } = req.user;
+      const { id } = req.params;
+      const response = await service.getById(id);
+      return !response
+        ? httpResponse.NOT_FOUND(res, dictionary.ERROR_DELETE_ITEM)
+        : req.user.role !== "admin"
+        ? email !== item.productOwner
+          ? httpResponse.UNAUTHORIZED(res, dictionary.ERROR_TOKEN)
+          : await service
+              .remove(id)
+              .then((deleteProd) => httpResponse.OK(res, deleteProd))
+        : await service
+            .remove(id)
+            .then((deleteProd) => httpResponse.OK(res, deleteProd));
+    } catch (error) {
+      next(error);
+    }
   };
 }

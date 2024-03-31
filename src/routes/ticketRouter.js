@@ -1,9 +1,9 @@
-import {Router} from 'express';
-import * as controller from '../controllers/ticket.controller.js';
-import { verifyToken } from '../middlewares/verify.token.js';
+import { Router } from "express";
+import * as controller from "../controllers/ticket.controller.js";
+import { verifyCookie } from "../middlewares/JwtCookies.js";
 
 const router = Router();
 
-router.post('/cart/:idCart', verifyToken, controller.newTicket);
+router.post("/cart/:idCart", verifyCookie, controller.newTicket);
 
 export default router;

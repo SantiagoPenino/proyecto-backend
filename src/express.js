@@ -1,21 +1,31 @@
 import express from "express";
 import morgan from "morgan";
-import MainRouter from "./routes/index.js";
-import { logger } from "./utils/logger.js";
-import { __dirname, mongoStoreOptions } from "../utils.js";
-import handlebars from "express-handlebars";
 import session from "express-session";
 import passport from "passport";
-import viewsRouter from "./routes/ViewsRouter.js";
 import cookieParser from "cookie-parser";
+import MainRouter from "./routes/index.js";
 import config from "./config/config.js";
+import { __dirname, mongoStoreOptions } from "./utils/utils.js";
+import { logger } from "./utils/logger.js";
+import handlebars from "express-handlebars";
+import viewsRouter from "./routes/ViewsRouter.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+import cors from "cors";
 
 const PORT = config.PORT;
 const mainRouter = new MainRouter();
 const server = express();
+const spects = swaggerJSDoc(info);
 
+server.use(
+  cors({
+    credentials: true,
+  })
+);
+
+server.use("/docs", swaggerUi.serve, swaggerUi.setup(spects));
 server.use(session(mongoStoreOptions));
-
 server.use(passport.initialize());
 server.use(passport.session());
 
