@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import userMongoDao from "../dao/mongodb/user/user.dao.js";
-import config from "../config.js";
+import userMongoDao from '../persistence/dao/mongodb/user/user.dao.js';
+import config from '../config/config.js'
 import { HttpResponse, dictionary } from "../utils/httpResponse.js";
 
 const userDao = new userMongoDao();

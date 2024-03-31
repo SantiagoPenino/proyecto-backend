@@ -1,12 +1,13 @@
 import { Router } from "express";
-import * as controller from "../controllers/views.controller.js";
+import ViewsController from "../controllers/views.controller.js";
 
 const router = Router();
+const controller = new ViewsController();
 
-router.get('/',controller.login);
-router.get('/register',controller.register);
-router.get('/profile',controller.profile);
-router.get('/register-error',controller.registerError);
-router.get('/login-error',controller.loginError);
+router.get("/", controller.login);
+router.get("/register", controller.register);
+router.get("/profile", controller.profile);
+router.get("/register-error", controller.errorRegister);
+router.get("/login-error", controller.errorLogin);
 
 export default router;

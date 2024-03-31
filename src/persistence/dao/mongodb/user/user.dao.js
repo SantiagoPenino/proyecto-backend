@@ -1,8 +1,8 @@
 import MongoDao from "../mongo.dao.js";
 import { UserModel } from "./user.model.js";
-import { createHash, isValidPassword } from "../../utils/utils.js";
+import { createHash, isValidPassword } from '../../../../utils/utils.js';
 import jwt from "jsonwebtoken";
-import config from "../../config/config.js";
+import config from '../../../../config/config.js';
 
 const SECRET_KEY_JWT = config.SECRET_KEY_JWT;
 

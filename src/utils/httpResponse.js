@@ -18,13 +18,14 @@ export const dictionary = {
   ERROR_FIND_ITEM: "Error finding item",
   ERROR_TOKEN: "Error token",
   ERROR_PASSWORD: "Error password",
+  ERROR_GET_ALL: "Error getting all",
 };
 
 export class HttpResponse {
   OK(res, data) {
     return res.status(httpStatus.OK).json({
       status: httpStatus.OK,
-      message: "Ok",
+      message: "Success",
       data: data,
     });
   }

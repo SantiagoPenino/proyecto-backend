@@ -1,8 +1,9 @@
 import { Router } from "express";
-import * as controller from "../controllers/products.controller.js";
+import ProductController from "../controllers/products.controller.js";
 import { verifyUser } from "../middlewares/verifyUser.js";
 
 const router = Router();
+const controller = new ProductController();
 
 router.get("/", controller.getAll);
 router.get("/:id", controller.getById);

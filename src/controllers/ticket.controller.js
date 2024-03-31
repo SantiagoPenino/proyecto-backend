@@ -1,5 +1,5 @@
 import Controllers from "./class.controllers.js";
-import TicketService from "../services/ticket.service.js";
+import TicketService from "../services/ticketService.js";
 import { HttpResponse } from "../utils/httpResponse.js";
 
 const httpResponse = new HttpResponse();

@@ -1,8 +1,9 @@
 import { Router } from "express";
-import * as controller from "../controllers/ticket.controller.js";
+import TicketController from "../controllers/ticket.controller.js";
 import { verifyCookie } from "../middlewares/JwtCookies.js";
 
 const router = Router();
+const controller = new TicketController();
 
 router.post("/cart/:idCart", verifyCookie, controller.newTicket);
 
