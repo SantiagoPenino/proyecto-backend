@@ -38,23 +38,23 @@ export class HttpResponse {
   }
   UNAUTHORIZED(res, data) {
     return res.status(httpStatus.UNAUTHORIZED).json({
-        status: httpStatus.UNAUTHORIZED,
-        message: "Unauthorized",
-        error: data,
-    })
+      status: httpStatus.UNAUTHORIZED,
+      message: "Unauthorized",
+      error: data,
+    });
   }
   FORBIDDEN(res, data) {
     return res.status(httpStatus.FORBIDDEN).json({
-        status: httpStatus.FORBIDDEN,
-        message: "Forbidden",
-        error: data,
-    })
+      status: httpStatus.FORBIDDEN,
+      message: "Forbidden",
+      error: data,
+    });
   }
   INTERNAL_SERVER_ERROR(res, data) {
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
-        status: httpStatus.INTERNAL_SERVER_ERROR,
-        message: "Internal Server Error",
-        error: data,
-    })
+      status: httpStatus.INTERNAL_SERVER_ERROR,
+      message: "Internal Server Error",
+      error: data,
+    });
   }
 }

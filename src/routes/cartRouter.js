@@ -1,16 +1,24 @@
 import { Router } from "express";
-import CartController from "../controllers/cart.controller.js";
-import { verifyCookie } from "../middlewares/JwtCookies.js";
+import CartControllers from "../controllers/cartControllers.js";
+import { checkAuth } from "../middlewares/checkAuth.js";
 
 const router = Router();
-const controller = new CartController();
+const controllers = new CartControllers();
 
-router.get("/", verifyCookie, controller.getAll);
-router.get("/:id", verifyCookie, controller.getById);
-router.post("/", verifyCookie, controller.create);
-router.delete("/:id", verifyCookie, controller.remove);
-router.post("/:idCart/products/:idProduct",verifyCookie,controller.addProductToCart);
-router.delete("/:idCart/products/:idProduct",verifyCookie,controller.removeProductToCart);
-router.delete("/empty/:idCart", verifyCookie, controller.emptyCart);
+router.get("/", checkAuth, controllers.getAll);
+router.get("/:id", checkAuth, controllers.getById);
+router.post("/", checkAuth, controllers.create);
+router.delete("/:id", checkAuth, controllers.delete);
+router.post(
+  "/:idCart/products/:idProduct",
+  checkAuth,
+  controllers.addProductToCart
+);
+router.delete(
+  "/:idCart/products/:idProduct",
+  checkAuth,
+  controllers.removeProductToCart
+);
+router.delete("/empty/:idCart", checkAuth, controllers.clearCart);
 
 export default router;

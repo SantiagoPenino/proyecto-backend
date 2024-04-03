@@ -5,21 +5,19 @@ import { HttpResponse, dictionary } from "../utils/httpResponse.js";
 
 const userDao = new UserDao();
 const SECRET_KEY = config.SECRET_KEY;
-const AUTH_HEADER = "Authorization";
 const httpResponse = new HttpResponse();
 
-export const verifyToken = async (req, res, next) => {
-  const authHeader = req.get(AUTH_HEADER);
-  if (!authHeader)
-    return httpResponse.UNAUTHORIZED(res, dictionary.ERROR_TOKEN);
+export const checkAuth = async (req, res, next) => {
   try {
-    const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, SECRET_KEY);
-    console.log("decoded token", decoded);
-    const user = await userDao.getById(decoded.userId);
-    if (!user || user.role !== "admin") {
-      console.log(user.role);
+    const token = req.cookies.token;
+    if (!token) {
       return httpResponse.UNAUTHORIZED(res, dictionary.ERROR_TOKEN);
+    }
+    const decode = jwt.verify(token, SECRET_KEY);
+    console.log("decoded token", decode);
+    const user = await userDao.getById(decode.userId);
+    if (!user) {
+      return httpResponse.UNAUTHORIZED(res, dictionary.ERROR_FIND_ITEM);
     }
     req.user = user;
     next();

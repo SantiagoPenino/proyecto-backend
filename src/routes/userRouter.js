@@ -1,17 +1,17 @@
 import { Router } from "express";
-import UserController from "../controllers/user.controller.js";
+import UserControllers from "../controllers/userControllers.js";
 import { verifyToken } from "../middlewares/verify.token.js";
-import { verifyCookie } from "../middlewares/JwtCookies.js";
+import { checkAuth } from "../middlewares/checkAuth.js";
 
 const router = Router();
-const controller = new UserController();
+const controllers = new UserControllers();
 
-router.post("/register", controller.register);
-router.post("/login", controller.login);
-router.get("/profile", verifyCookie, controller.profile);
-router.get("/all", verifyToken, controller.getAll);
-router.delete("/delete", verifyToken, controller.removeInactive);
-router.post("/reset-password", verifyToken, controller.resetPassword);
-router.put("/new-password", verifyToken, controller.updatePassword);
+router.post("/register", controllers.register);
+router.post("/login", controllers.login);
+router.get("/profile", checkAuth, controllers.profile);
+router.get("/all", verifyToken, controllers.getAll);
+router.delete("/delete", verifyToken, controllers.deleteInactive);
+router.post("/reset-password", verifyToken, controllers.resetPassword);
+router.put("/new-password", verifyToken, controllers.updatePassword);
 
 export default router;

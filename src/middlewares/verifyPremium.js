@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
-import userMongoDao from "../daos/userMongoDao.js";
-import config from "../config.js";
+import UserDao from "../persistence/daos/userDao.js";
+import config from "../config/config.js";
 import { HttpResponse, dictionary } from "../utils/httpResponse.js";
 
-const userDao = new userMongoDao();
+const userDao = new UserDao();
 const SECRET_KEY = config.SECRET_KEY_JWT;
 const httpResponse = new HttpResponse();
 

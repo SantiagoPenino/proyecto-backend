@@ -1,0 +1,24 @@
+paths:
+  /users:
+    post:
+      tags: Users
+      summary: New user register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/parameters/schema/NewUser"
+        required: true
+        responses:
+          200:
+            description: User created
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schema/Users/CreateUser"
+          403:
+            description: User already exists
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Users/NotFound"

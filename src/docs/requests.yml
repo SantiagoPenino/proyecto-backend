@@ -1,0 +1,54 @@
+components:
+  parameters:
+    schemas:
+      BodyNewUser:
+        type: object
+        required:
+        - firstName
+        - lastName
+        - email
+        - age
+        - password
+        - role
+        - isGithub
+        - isGoogle
+        - lastConnection
+        properties:
+          firstName:
+            type: string
+            description: User first name
+          lastName:
+            type: string
+            description: User last name
+          email:
+            type: string
+            description: User email
+          age:
+            type: number
+            description: User age
+          password:
+            type: string
+            description: User password
+          role:
+            type: string
+            description: User role
+          isGithub:
+            type: boolean
+            description: User has Github
+          isGoogle:
+            type: boolean
+            description: User has Google
+          lastConnection:
+            type: string
+            description: User last connection
+        example:
+          firstName: "John"
+          lastName: "Doe"
+          email: "john@doe.com"
+          age: 25
+          password: "password"
+          role: "user"
+          isGithub: false
+          isGoogle: false
+          lastConnection: "2022-01-01T00:00:00.000Z"
+

@@ -4,20 +4,11 @@ import userRouter from "./userRouter.js";
 import cartRouter from "./cartRouter.js";
 import ticketRouter from "./ticketRouter.js";
 
-export default class MainRouter {
-  constructor() {
-    this.router = Router();
-    this.initRoutes();
-  }
+const router = Router();
 
-  initRoutes() {
-    this.router.use("/products", productRouter);
-    this.router.use("/users", userRouter);
-    this.router.use("/carts", cartRouter);
-    this.router.use("/tickets", ticketRouter);
-  }
+router.use("/products", productRouter);
+router.use("/users", userRouter);
+router.use("/carts", cartRouter);
+router.use("/tickets", ticketRouter);
 
-  getRouter() {
-    return this.router;
-  }
-}
+export default router;

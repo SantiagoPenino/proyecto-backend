@@ -1,10 +1,10 @@
 import { Router } from "express";
-import TicketController from "../controllers/ticket.controller.js";
-import { verifyCookie } from "../middlewares/JwtCookies.js";
+import TicketControllers from "../controllers/ticketControllers.js";
+import { checkAuth } from "../middlewares/checkAuth.js";
 
 const router = Router();
-const controller = new TicketController();
+const controllers = new TicketControllers();
 
-router.post("/cart/:idCart", verifyCookie, controller.newTicket);
+router.post("/cart/:idCart", checkAuth, controllers.newTicket);
 
 export default router;

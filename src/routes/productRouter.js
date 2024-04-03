@@ -1,14 +1,14 @@
 import { Router } from "express";
-import ProductController from "../controllers/products.controller.js";
+import ProductControllers from "../controllers/productControllers.js";
 import { verifyUser } from "../middlewares/verifyUser.js";
 
 const router = Router();
-const controller = new ProductController();
+const controllers = new ProductControllers();
 
-router.get("/", controller.getAll);
-router.get("/:id", controller.getById);
-router.post("/", verifyUser, controller.create);
-router.put("/:id", verifyUser, controller.update);
-router.delete("/:id", verifyUser, controller.remove);
+router.get("/", controllers.getAll);
+router.get("/:id", controllers.getById);
+router.post("/", verifyUser, controllers.create);
+router.put("/:id", verifyUser, controllers.update);
+router.delete("/:id", verifyUser, controllers.delete);
 
 export default router;
