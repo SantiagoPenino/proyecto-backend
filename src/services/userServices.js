@@ -11,9 +11,9 @@ export default class UserServices extends Services {
 
   register = async (user) => {
     try {
-      const newUser = await userDao.register(user);
+      const response = await userDao.register(user);
       await sendMail(user, "register");
-      return newUser;
+      return response;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -21,13 +21,8 @@ export default class UserServices extends Services {
 
   login = async (user) => {
     try {
-      const { token, userId } = await userDao.login(user);
-      if (token && userId) {
-        await this.lastConnection(userId);
-        return { token, userId };
-      } else {
-        return false;
-      }
+      const userExists = await userDao.login(user);
+      return userExists;
     } catch (error) {
       throw new Error(error.message);
     }

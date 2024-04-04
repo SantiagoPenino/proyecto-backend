@@ -1,35 +1,27 @@
-import { dirname, resolve } from "path";
-import { fileURLToPath } from "url";
-import bcryptjs from "bcryptjs";
+import bcrypt from "bcryptjs";
 import MongoStore from "connect-mongo";
 import config from "../config/config.js";
 
+const { compareSync, genSaltSync, hashSync } = bcrypt;
+
 export const mongoStoreOptions = {
-  secret: config.SESSION_KEY,
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    maxAge: 10000,
-  },
   store: new MongoStore({
     mongoUrl: config.MONGO_URL,
     ttl: 10,
   }),
+  secret: config.SESSION_KEY,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    maxAge: 20000,
+  },
 };
 
-export const __dirname = resolve(
-  dirname(fileURLToPath(import.meta.url)),
-  "../../src"
-);
-
 export const createHash = (password) => {
-  return bcryptjs.hashSync(password, bcryptjs.genSaltSync(10));
+  const saltSync = genSaltSync(10);
+  return hashSync(password, saltSync);
 };
 
 export const isValidPassword = (user, password) => {
-  return bcryptjs.compareSync(password, user.password);
-};
-
-export const createResponse = (res, statusCode, data) => {
-  return res.status(statusCode).json({ data });
+  return compareSync(password, user.password);
 };

@@ -1,21 +1,23 @@
 import MongoDao from "./mongoDao.js";
+import CartDao from "./cartDao.js";
 import { UserModel } from "../models/userModel.js";
-import { createHash, isValidPassword } from "../../utils/utils.js";
+import { createHash, isValidPassword } from "../utils/utils.js";
 import jwt from "jsonwebtoken";
-import config from "../../config/config.js";
+import config from "../config/config.js";
 
-const SECRET_KEY_JWT = config.SECRET_KEY_JWT;
+const SECRET_KEY = config.SECRET_KEY;
+const cartDao = new CartDao();
 
 export default class UserDao extends MongoDao {
   constructor() {
     super(UserModel);
   }
 
-  newToken(user, expirationTime) {
+  generateToken(user, expirationTime) {
     const payload = {
       userId: user._id,
     };
-    const token = jwt.sign(payload, SECRET_KEY_JWT, {
+    const token = jwt.sign(payload, SECRET_KEY, {
       expiresIn: expirationTime,
     });
     return token;
@@ -24,7 +26,7 @@ export default class UserDao extends MongoDao {
   register = async (user) => {
     try {
       const { email, password } = user;
-      const userExists = await this.model.findOne({ email });
+      const userExists = await this.getByEmail({ email });
       return !userExists
         ? email === "admin@coder.com" && password === "admin"
           ? await this.model.create({
@@ -57,8 +59,7 @@ export default class UserDao extends MongoDao {
   getByEmail = async (email) => {
     try {
       const userExists = await this.model.findOne({ email });
-      if (userExists) return userExists;
-      else return false;
+      return userExists || false;
     } catch (error) {
       throw new Error(error.message);
     }

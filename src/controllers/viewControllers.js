@@ -7,6 +7,7 @@ export default class ViewControllers {
   };
   profile = (req, res) => {
     const user = req.session.user;
+    console.log(user)
     return user
       ? res.render("profile", { user, name: user.name })
       : res.redirect("/login-error");

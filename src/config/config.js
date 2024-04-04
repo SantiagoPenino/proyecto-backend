@@ -1,8 +1,8 @@
 import "dotenv/config";
 
 export default {
-  PORT: process.env.PORT,
-  ENV: process.env.ENV,
+  PORT: process.env.PORT || 8080,
+  ENV: process.env.ENV || "dev",
   MONGO_URL: process.env.MONGO_URL,
   SECRET_KEY: process.env.SECRET_KEY,
   SESSION_KEY: process.env.SESSION_KEY,

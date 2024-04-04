@@ -8,6 +8,6 @@ export const initMongoDB = async () => {
     await connect(connectionString);
     console.log("MongoDB connected");
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
   }
 };

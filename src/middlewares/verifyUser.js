@@ -1,7 +1,7 @@
 import Jwt from "jsonwebtoken";
-import UserDao from "../persistence/daos/userDao.js";
+import UserDao from "../daos/userDao.js";
 import config from "../config/config.js";
-import { HttpResponse, dictionary } from "../utils/httpResponse.js";
+import { HttpResponse } from "../utils/httpResponse.js";
 
 const userDao = new UserDao();
 const SECRET_KEY = config.SECRET_KEY;
@@ -17,10 +17,10 @@ export const verifyUser = async (req, res, next) => {
       req.user = user;
       next();
     } else {
-      return httpResponse.UNAUTHORIZED(res, dictionary.ERROR_TOKEN);
+      return httpResponse.UNAUTHORIZED(res, 'Error getting user');
     }
   } catch (error) {
     console.log(error);
-    return httpResponse.UNAUTHORIZED(res, dictionary.ERROR_TOKEN);
+    return httpResponse.UNAUTHORIZED(res, 'Error getting user');
   }
 };

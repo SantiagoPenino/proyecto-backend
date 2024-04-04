@@ -66,7 +66,7 @@ export default class CartDao extends MongoDao {
     }
   };
 
-  clear = async (cart) => {
+  clearCart = async (cart) => {
     try {
       if (!cart) {
         throw new Error("Cart not found");

@@ -4,7 +4,7 @@ import config from "../config/config.js";
 import { HttpResponse, dictionary } from "../utils/httpResponse.js";
 
 const userDao = new UserDao();
-const SECRET_KEY = config.SECRET_KEY_JWT;
+const SECRET_KEY = config.SECRET_KEY;
 const httpResponse = new HttpResponse();
 
 export const verifyPremium = async (req, res, next) => {

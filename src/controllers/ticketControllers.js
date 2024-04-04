@@ -9,16 +9,16 @@ export default class TicketControllers extends Controllers {
     super(ticketServices);
   }
 
-  newTicket = async (req, res, next) => {
+  generateTicket = async (req, res, next) => {
     try {
       const { _id } = req.user;
       const { cartId } = req.params;
-      const ticket = await ticketServices.newTicket(_id, cartId);
-      return !ticket
+      const data = await ticketServices.newTicket(_id, cartId);
+      return !data
         ? httpResponse.NOT_FOUND(res, "Error generating ticket")
-        : httpResponse.OK(res, ticket);
+        : httpResponse.OK(res, data);
     } catch (error) {
-      next(error);
+      next(error.message);
     }
   };
 }

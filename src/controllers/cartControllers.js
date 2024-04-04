@@ -1,94 +1,65 @@
 import CartServices from "../services/cartServices.js";
 import Controllers from "./classControllers.js";
-import { HttpResponse, dictionary } from "../utils/httpResponse.js";
+import { HttpResponse } from "../utils/httpResponse.js";
 
 const httpResponse = new HttpResponse();
 const cartServices = new CartServices();
+
 export default class CartControllers extends Controllers {
   constructor() {
     super(cartServices);
   }
 
-  create = async (req, res, next) => {
-    try {
-      const { email } = req.user;
-      const newCart = await cartServices.create(req.body, email);
-      return httpResponse.OK(res, newCart);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  getAll = async (req, res, next) => {
-    try {
-      const { email } = req.user;
-      const carts = await cartServices.getAll(email);
-      return carts.length === 0
-        ? httpResponse.NOT_FOUND(res, dictionary.ERROR_GET_ALL)
-        : httpResponse.OK(res, items);
-    } catch (error) {
-      next(error);
-    }
-  };
-
-  delete = async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const { email } = req.user;
-      const deletedCart = await cartServices.delete(id, email);
-      return !deletedCart
-        ? httpResponse.NOT_FOUND(res, dictionary.ERROR_DELETE_CART)
-        : httpResponse.OK(res, deletedCart);
-    } catch (error) {
-      next(error);
-    }
-  };
-
   addProductToCart = async (req, res, next) => {
     try {
-      const { idCart } = req.params;
-      const { idProduct } = req.params;
-      const addProdToUserCart = await cartServices.addProductToCart(
-        idCart,
-        idProduct
-      );
-      return !addProdToUserCart
-        ? httpResponse.NOT_FOUND(res, dictionary.ERROR_ADD_ITEM_TO_CART)
-        : httpResponse.OK(res, addProdToUserCart);
+      const { cartId, productId } = req.params;
+      const data = await cartServices.addProductToCart(cartId, productId);
+      return !data
+        ? httpResponse.NOT_FOUND(res, "Error adding product to cart")
+        : httpResponse.OK(res, data);
     } catch (error) {
-      next(error);
+      next(error.message);
     }
   };
 
   removeProductToCart = async (req, res, next) => {
     try {
-      const { cartId } = req.params;
-      const { itemId } = req.params;
-      const deleteProdToUserCart = await cartServices.removeProductToCart(
-        cartId,
-        itemId
-      );
-      return !deleteProdToUserCart
-        ? httpResponse.NOT_FOUND(res, dictionary.ERROR_DELETE_ITEM_TO_CART)
-        : httpResponse.OK(res, deleteProdToUserCart);
+      const { cartId, productId } = req.params;
+      const data = await cartServices.removeProductToCart(cartId, productId);
+      return !data
+        ? httpResponse.NOT_FOUND(res, "Error removing product from cart")
+        : httpResponse.OK(res, data);
     } catch (error) {
-      next(error);
+      next(error.message);
     }
   };
   updateProductQuantityToCart = async (req, res, next) => {
     try {
-      const { itemId, cartId } = req.params;
+      const { cartId, productId } = req.params;
       const { quantity } = req.body;
-      const updatedQuantity = await cartServices.updateProductQuantityToCart(
+      const data = await cartServices.updateProductQuantityToCart(
         cartId,
-        itemId,
+        productId,
         quantity
       );
-      return !updatedQuantity
+      return !data
         ? httpResponse.NOT_FOUND(res, "Error updating product quantity in cart")
-        : httpResponse.OK(res, updatedQuantity);
+        : httpResponse.OK(res, data);
     } catch (error) {
-      next(error);
+      next(error.message);
+    }
+  };
+
+  updateCart = async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { products } = req.body;
+      const data = await cartServices.updateCart(id, products);
+      return !data
+        ? httpResponse.NOT_FOUND(res, "Error updating cart")
+        : httpResponse.OK(res, data);
+    } catch (error) {
+      next(error.message);
     }
   };
 
@@ -100,7 +71,7 @@ export default class CartControllers extends Controllers {
         ? httpResponse.NOT_FOUND(res, "Error emptying cart")
         : httpResponse.OK(res, emptyCart);
     } catch (error) {
-      next(error);
+      next(error.message);
     }
   };
 }

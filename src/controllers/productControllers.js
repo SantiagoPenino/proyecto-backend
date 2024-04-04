@@ -1,6 +1,6 @@
 import Controllers from "./classControllers.js";
 import ProductServices from "../services/productsServices.js";
-import { HttpResponse, dictionary } from "../utils/httpResponse.js";
+import { HttpResponse } from "../utils/httpResponse.js";
 
 const httpResponse = new HttpResponse();
 const productServices = new ProductServices();
@@ -10,33 +10,34 @@ export default class ProductControllers extends Controllers {
     super(productServices);
   }
 
-  create = async (req, res, next) => {
+  createProduct = async (req, res, next) => {
     try {
       const { email } = req.user;
-      const newProduct = await productServices.create(req.body, email);
-      return httpResponse.OK(res, newProduct);
+      const data = req.body;
+      const response = await productServices.createProduct(data, email);
+      return httpResponse.OK(res, response);
     } catch (error) {
-      next(error);
+      next(error.message);
     }
   };
 
-  delete = async (req, res, next) => {
+  deleteProduct = async (req, res, next) => {
     try {
       const { email } = req.user;
-      const { id } = req.params;
-      let product = await this.service.getById(id);
-      if (!product) {
-        return httpResponse.NOT_FOUND(res, dictionary.ERROR_DELETE_ITEM);
+      const { productId } = req.params;
+      const item = await this.service.getById(productId);
+      if (!item) {
+        return httpResponse.NOT_FOUND(res, "Error getting item");
       } else {
-        if (req.user.role === "admin" || email === product.owner) {
-          const deletedProduct = await productServices.delete(id);
-          return httpResponse.OK(res, deletedProduct);
+        if (req.user.role === "admin" || email === item.owner) {
+          const itemToDelete = await productServices.deleteProduct(productId);
+          return httpResponse.OK(res, itemToDelete);
         } else {
-          return httpResponse.UNAUTHORIZED(res, dictionary.UNAUTHORIZED);
+          return httpResponse.UNAUTHORIZED(res, "Error deleting item");
         }
       }
     } catch (error) {
-      next(error);
+      next(error.message);
     }
   };
 }

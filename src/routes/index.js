@@ -2,13 +2,22 @@ import { Router } from "express";
 import productRouter from "./productRouter.js";
 import userRouter from "./userRouter.js";
 import cartRouter from "./cartRouter.js";
-import ticketRouter from "./ticketRouter.js";
+import viewRouter from "./ViewRouter.js";
 
-const router = Router();
+export default class MainRouter {
+  constructor() {
+    this.router = Router();
+    this.initRoutes();
+  }
 
-router.use("/products", productRouter);
-router.use("/users", userRouter);
-router.use("/carts", cartRouter);
-router.use("/tickets", ticketRouter);
+  initRoutes() {
+    this.router.use("/api/products", productRouter);
+    this.router.use("/api/users", userRouter);
+    this.router.use("/api/carts", cartRouter);
+    this.router.use("/", viewRouter);
+  }
 
-export default router;
+  getRouter() {
+    return this.router;
+  }
+}
