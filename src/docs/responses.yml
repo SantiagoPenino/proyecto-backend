@@ -335,6 +335,18 @@ components:
           error:
             type: string
             description: Unauthorized
+      ErrorGetById:
+        type: object
+        properties:
+          status:
+            type: number
+            description: Status code
+          message:
+            type: string
+            description: Status message
+          error:
+            type: string
+            description: Error by id
 
         
           
