@@ -61,7 +61,7 @@ paths:
               application/json:
                 schema:
                   $ref: "#/components/schemas/Errors/NotFound"
-  /api/users/profile-cookie:
+  /api/users/profile:
     get:
       tags: Users
       summary: Get user profile
