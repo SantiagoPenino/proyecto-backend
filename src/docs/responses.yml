@@ -1,7 +1,7 @@
 components:
   schema:
     Users:
-      NewUser:
+      CreateUser:
         type: object
         properties:
           status:
