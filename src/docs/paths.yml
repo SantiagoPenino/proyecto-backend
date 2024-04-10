@@ -499,18 +499,18 @@ paths:
       tags: Carts
       summary: Add product to cart
       parameters:
-        in: path
-        name: idCart
-        required: true
-        description: Cart id
-        schema:
-          type: string
-        in: path
-        name: idProduct
-        required: true
-        description: Product id
-        schema:
-          type: string
+        - in: path
+          name: idCart
+          required: true
+          description: Cart id
+          schema:
+            type: string
+        - in: path
+          name: idProduct
+          required: true
+          description: Product id
+          schema:
+            type: string
       responses:
         200:
           description: Product added to cart successfully
@@ -540,18 +540,18 @@ paths:
       tags: Carts
       summary: Remove product from cart
       parameters:
-        in: path
-        name: idCart
-        required: true
-        description: Cart id
-        schema:
-          type: string
-        in: path
-        name: idProduct
-        required: true
-        description: Product id
-        schema:
-          type: string
+        - in: path
+          name: idCart
+          required: true
+          description: Cart id
+          schema:
+            type: string
+        - in: path
+          name: idProduct
+          required: true
+          description: Product id
+          schema:
+            type: string
       responses:
         200:
           description: Product removed from cart successfully

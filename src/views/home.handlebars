@@ -1,12 +1,8 @@
-<h1>Bienvenido, {{name}}</h1>
-
-<h2>Lista de productos</h2>
-{{#if products.length}}
-  {{#each products}}
-    <p>{{this.title}}</p>
-    <p>{{this.description}}</p>
-    <p>${{this.price}}</p>
-  {{/each}}
-{{else}}
-  <h3>No hay productos</h3>
-{{/if}}
+<div class="home">
+  <h2>Hello World!</h2>
+  <div>
+  <button onclick="location.href='/register'">Register</button>
+  <h3>or</h3>
+  <button onclick="location.href='/login'">Login</button>
+  <div>
+</div>

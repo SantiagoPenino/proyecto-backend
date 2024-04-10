@@ -25,13 +25,15 @@ export default class UserControllers extends Controllers {
     try {
       const { token, idUser } = await userServices.login(req.body);
       if (!token || !idUser) {
-        return httpResponse.UNAUTHORIZED(res, "Error logging in");
+        res.redirect("/login-error");
+        // return httpResponse.UNAUTHORIZED(res, "Error logging in");
       } else {
         res.cookie("token", token, {
           httpOnly: true,
         });
-        res.header("Authorization", `Bearer ${token}`);
-        return httpResponse.OK(res, { token, idUser });
+        // res.header("Authorization", `Bearer ${token}`);
+        // return httpResponse.OK(res, { token, idUser });
+        res.redirect("/profile");
       }
     } catch (error) {
       next(error.message);
@@ -41,6 +43,7 @@ export default class UserControllers extends Controllers {
   profile = async (req, res, next) => {
     try {
       const { firstName, lastName, email, role } = req.user;
+      console.log(req.user);
       return httpResponse.OK(res, { firstName, lastName, email, role });
     } catch (error) {
       next(error.message);
@@ -84,6 +87,21 @@ export default class UserControllers extends Controllers {
       return !inactiveUsers
         ? httpResponse.NOT_FOUND(res, "Error deleting inactive users")
         : httpResponse.OK(res, inactiveUsers);
+    } catch (error) {
+      next(error.message);
+    }
+  };
+
+  uploader = async (req, res, next) => {
+    try {
+      const user = req.user.id;
+      if (!req.file || !user) {
+        return httpResponse.UNAUTHORIZED(res, "Error uploading file");
+      } else {
+        const path = req.file.path;
+        const userImage = await userServices.uploader(user, path);
+        return httpResponse.OK(res, userImage);
+      }
     } catch (error) {
       next(error.message);
     }

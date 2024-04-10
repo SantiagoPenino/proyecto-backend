@@ -68,4 +68,17 @@ export default class userModel extends Services {
       throw new Error(error.message);
     }
   };
+  uploader = async (user, path) => {
+    try {
+      const idUser = await userDao.getById(user);
+      if (!idUser) {
+        return false;
+      } else {
+        const user = await userDato.updateImage(idUser, path);
+        return user;
+      }
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 }

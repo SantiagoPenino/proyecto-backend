@@ -1,4 +1,7 @@
 export default class ViewControllers {
+  home = (req, res) => {
+    res.render("home");
+  };
   login = (req, res) => {
     res.render("login");
   };
@@ -6,16 +9,12 @@ export default class ViewControllers {
     res.render("register");
   };
   profile = (req, res) => {
-    const user = req.session.user;
-    console.log(user)
-    return user
-      ? res.render("profile", { user, name: user.name })
-      : res.redirect("/login-error");
+    res.render("profile");
   };
-  errorRegister = (req, res) => {
+  registerError = (req, res) => {
     res.render("register-error");
   };
-  errorLogin = (req, res) => {
+  loginError = (req, res) => {
     res.render("login-error");
   };
 }

@@ -20,7 +20,7 @@ const server = express();
 const specs = swaggerJSDoc(info);
 const mainRouter = new MainRouter();
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+export const __dirname = dirname(__filename);
 console.log(__dirname);
 
 server.use(

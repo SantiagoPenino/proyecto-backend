@@ -123,4 +123,28 @@ export default class UserDao extends MongoDao {
       throw new Error(error.message);
     }
   };
+  updateImage = async (idUser, path) => {
+    try {
+      const user = await this.model.findOneAndUpdate(
+        {
+          _id: idUser,
+        },
+        { $set: { image: path } },
+        { new: true }
+      );
+      if (idUser.role !== "admin" || idUser.role !== "premium") {
+        const user = await this.model.findOneAndupdate(
+          {
+            _id: idUser,
+          },
+          { $set: { image: path } },
+          { new: true }
+        );
+        return user;
+      }
+      return user;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 }

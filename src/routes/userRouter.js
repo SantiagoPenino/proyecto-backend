@@ -8,7 +8,7 @@ const controllers = new UserControllers();
 
 router.post("/register", controllers.register);
 router.post("/login", controllers.login);
-router.get("/profile-cookie", checkAuth, controllers.profile);
+router.get("/profile", checkAuth, controllers.profile);
 router.get("/all", verifyToken, controllers.getAll);
 router.delete("/delete", verifyToken, controllers.deleteInactive);
 router.post("/reset-password", verifyToken, controllers.resetPassword);

@@ -1,14 +1,33 @@
-<h1>Registro</h1>
-<form action="/api/users/register" method="POST">
-  <label for="firstName">First name</label>
-  <input type="text" name="firstName" id="firstName" />
-  <label for="lastName">Last name</label>
-  <input type="text" name="lastName" id="lastName" />
-  <label for="email">Email</label>
-  <input type="text" name="email" id="email" />
-  <label for="age">Age</label>
-  <input type="number" name="age" id="age" />
-  <label for="password">Password</label>
-  <input type="password" name="password" id="password" />
-  <button type="submit">Register</button>
-</form>
+<div class="form-div">
+  <h2>Sign Up</h2>
+  <form action="/api/users/register" method="POST">
+
+    <input
+      type="text"
+      placeholder="First Name"
+      name="firstName"
+      id="firstName"
+    />
+
+    <input type="text" placeholder="Last Name" name="lastName" id="lastName" />
+
+    <input type="text" placeholder="Email" name="email" id="email" />
+
+    <input
+      type="number"
+      placeholder="Age"
+      style="-moz-appearance: textfield"
+      name="age"
+      id="age"
+    />
+
+    <input
+      type="password"
+      placeholder="Password"
+      name="password"
+      id="password"
+    />
+
+    <button type="submit">Register</button>
+  </form>
+</div>
