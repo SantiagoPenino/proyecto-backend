@@ -8,7 +8,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/parameters/schema/NewUser"
+              $ref: "#/components/parameters/schemas/NewUser"
       responses:
         200:
           description: Register successful
@@ -21,13 +21,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
   /api/users/login:
     post:
       tags: 
@@ -37,7 +37,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/parameters/schema/LoginUser"
+              $ref: "#/components/parameters/schemas/LoginUser"
       responses:
         200:
           description: Login successful
@@ -50,19 +50,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
   /api/users/profile:
     get:
       tags: 
@@ -80,22 +80,23 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
   /api/users/all:
     get:
-      tags: Users
+      tags: 
+      - Users
       summary: Get all users
       responses:
         200:
@@ -109,19 +110,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
       security:
         - bearerAuth: []
   /api/users/delete:
@@ -141,19 +142,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
       security:
         - bearerAuth: []
   /api/users/profile-img:
@@ -183,19 +184,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
   /api/products/:
     get:
       tags: 
@@ -213,19 +214,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
     post:
       tags: 
       - Products
@@ -235,7 +236,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/parameters/schema/BodyProduct"
+              $ref: "#/components/parameters/schemas/BodyProduct"
       responses:
         200:
           description: Product created successfully
@@ -248,19 +249,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
   /api/products/{id}:
     get:
       tags: 
@@ -285,19 +286,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
     put:
       tags: 
       - Products
@@ -313,7 +314,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/parameters/schema/BodyProduct"
+              $ref: "#/components/parameters/schemas/BodyProduct"
       responses:
         200:
           description: Product updated successfully
@@ -326,19 +327,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
     delete:
       tags: 
       - Products
@@ -362,19 +363,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
   /api/carts/:
     get:
       tags: 
@@ -392,19 +393,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
     post:
       tags: 
       - Carts
@@ -421,19 +422,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
   /api/carts/{id}:
     delete:
       tags: 
@@ -458,19 +459,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
     get:
       tags: 
       - Carts
@@ -494,19 +495,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
   /api/carts/{idCart}/products/{idProduct}:
     post:
       tags: 
@@ -537,19 +538,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
     delete:
       tags: 
       - Carts
@@ -579,19 +580,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
   /api/carts/clear/{idCart}:
     delete:
       tags: 
@@ -616,19 +617,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
   /api/tickets/{idCart}:
     post:
       tags: 
@@ -653,16 +654,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/UnauthorizedError"
+                $ref: "#/components/schema/Errors/UnauthorizedError"
         404:
           description: Validation error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+                $ref: "#/components/schema/Errors/ValidationSchemaError"
         500:
           description: Internal server error
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Errors/NotFound"
+                $ref: "#/components/schema/Errors/NotFound"
