@@ -126,7 +126,8 @@ paths:
         - bearerAuth: []
   /api/users/delete:
     delete:
-      tags: Users
+      tags: 
+      - Users
       summary: Delete user
       responses:
         200:
@@ -157,7 +158,8 @@ paths:
         - bearerAuth: []
   /api/users/profile-img:
     post:
-      tags: Users
+      tags: 
+      - Users
       summary: Upload profile image
       requestBody:
         required: true
@@ -169,7 +171,6 @@ paths:
                 profile:
                   type: string
                   format: binary
-                  description: Profile image
       responses:
         200:
           description: Image uploaded successfully
@@ -197,7 +198,8 @@ paths:
                 $ref: "#/components/schemas/Errors/NotFound"
   /api/products/:
     get:
-      tags: Products
+      tags: 
+      - Products
       summary: Get all products
       responses:
         200:
@@ -225,7 +227,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Errors/NotFound"
     post:
-      tags: Products
+      tags: 
+      - Products
       summary: Create new product
       requestBody:
         required: true
@@ -260,7 +263,8 @@ paths:
                 $ref: "#/components/schemas/Errors/NotFound"
   /api/products/{id}:
     get:
-      tags: Products
+      tags: 
+      - Products
       summary: Get product by id
       parameters:
         in: path
@@ -295,7 +299,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Errors/NotFound"
     put:
-      tags: Products
+      tags: 
+      - Products
       summary: Update product
       parameter:
         in: path
@@ -335,15 +340,16 @@ paths:
               schema:
                 $ref: "#/components/schemas/Errors/NotFound"
     delete:
-      tags: Products
+      tags: 
+      - Products
       summary: Delete product
       parameters:
-        in: path
-        name: id
-        required: true
-        description: Product id
-        schema:
-          type: string
+        - in: path
+          name: id
+          required: true
+          description: Product id
+          schema:
+            type: string
       responses:
         200:
           description: Product deleted successfully
@@ -371,7 +377,8 @@ paths:
                 $ref: "#/components/schemas/Errors/NotFound"
   /api/carts/:
     get:
-      tags: Carts
+      tags: 
+      - Carts
       summary: Get all carts
       responses:
         200:
@@ -399,7 +406,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Errors/NotFound"
     post:
-      tags: Carts
+      tags: 
+      - Carts
       summary: Create cart
       responses:
         200:
@@ -407,7 +415,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schema/Carts/CreateCart"
+                $ref: "#/components/schema/Carts/Cart"
         401:
           description: Unauthorized
           content:
@@ -428,22 +436,23 @@ paths:
                 $ref: "#/components/schemas/Errors/NotFound"
   /api/carts/{id}:
     delete:
-      tags: Carts
+      tags: 
+      - Carts
       summary: Delete cart
       parameters:
-        in: path
-        name: id
-        required: true
-        description: Cart id
-        schema:
-          type: string
+        - in: path
+          name: id
+          required: true
+          description: Cart id
+          schema:
+            type: string
       responses:
         200:
           description: Cart deleted successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schema/Carts/DeleteCart"
+                $ref: "#/components/schema/Carts/Cart"
         401:
           description: Unauthorized
           content:
@@ -463,15 +472,16 @@ paths:
               schema:
                 $ref: "#/components/schemas/Errors/NotFound"
     get:
-      tags: Carts
+      tags: 
+      - Carts
       summary: Get cart by id
       parameters:
-        in: path
-        name: id
-        required: true
-        description: Cart id
-        schema:
-          type: string
+        - in: path
+          name: id
+          required: true
+          description: Cart id
+          schema:
+            type: string
       responses:
         200:
           description: Cart found
@@ -499,7 +509,8 @@ paths:
                 $ref: "#/components/schemas/Errors/NotFound"
   /api/carts/{idCart}/products/{idProduct}:
     post:
-      tags: Carts
+      tags: 
+      - Carts
       summary: Add product to cart
       parameters:
         - in: path
@@ -520,7 +531,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schema/Carts/AddProductToCart"
+                $ref: "#/components/schema/Carts/Cart"
         401:
           description: Unauthorized
           content:
@@ -540,7 +551,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/Errors/NotFound"
     delete:
-      tags: Carts
+      tags: 
+      - Carts
       summary: Remove product from cart
       parameters:
         - in: path
@@ -582,22 +594,23 @@ paths:
                 $ref: "#/components/schemas/Errors/NotFound"
   /api/carts/clear/{idCart}:
     delete:
-      tags: Carts
+      tags: 
+      - Carts
       summary: Clear cart
       parameters:
-        in: path
-        name: idCart
-        required: true
-        description: Cart id
-        schema:
-          type: string
+        - in: path
+          name: idCart
+          required: true
+          description: Cart id
+          schema:
+            type: string
       responses:
         200:
           description: Cart cleared successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schema/Carts/Cart"
+                $ref: "#/components/schema/Carts/ClearCart"
         401:
           description: Unauthorized
           content:
@@ -618,15 +631,16 @@ paths:
                 $ref: "#/components/schemas/Errors/NotFound"
   /api/tickets/{idCart}:
     post:
-      tags: Tickets
+      tags: 
+      - Tickets
       summary: Generate ticket
       parameters:
-        in: path
-        name: idCart
-        required: true
-        description: Cart id
-        schema:
-          type: string
+        - in: path
+          name: idCart
+          required: true
+          description: Cart id
+          schema:
+            type: string
       responses:
         200:
           description: Ticket generated successfully

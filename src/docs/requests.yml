@@ -4,12 +4,10 @@ components:
       NewUser:
         type: object
         required:
-        - firstName
-        - lastName
-        - email
-        - password
-        - age
-        - role
+          - firstName
+          - lastName
+          - email
+          - password
         properties:
           firstName:
             type: string
@@ -23,24 +21,16 @@ components:
           password:
             type: string
             description: User password
-          age:
-            type: number
-            description: User age
-          role:
-            type: string
-            description: User role
         example:
           firstName: "John"
           lastName: "Doe"
           email: "john@doe.com"
-          age: 25
           password: "pass"
-          role: "user"
       LoginUser:
         type: object
         required:
-        - email
-        - password
+          - email
+          - password
         properties:
           email:
             type: string

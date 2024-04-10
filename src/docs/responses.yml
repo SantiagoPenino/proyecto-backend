@@ -159,6 +159,9 @@ components:
                 stock:
                   type: number
                   description: Product stock
+                _id:
+                  type: string
+                  description: Product id
                 category:
                   type: string
                   description: Product category
