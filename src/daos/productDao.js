@@ -8,10 +8,10 @@ export default class ProductDao extends MongoDao {
 
   create = async (data) => {
     try {
-      const product = await this.model.create(data);
-      return product;
+      const newProduct = await ProductModel.create(data);
+      return newProduct;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 }

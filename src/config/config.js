@@ -10,4 +10,5 @@ export default {
   SECRET_COOKIES: process.env.SECRET_COOKIES,
   EMAIL: process.env.EMAIL,
   PASSWORD: process.env.PASSWORD,
+  DATABASE_NAME: process.env.DATABASE_NAME,
 };

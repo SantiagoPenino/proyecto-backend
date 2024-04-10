@@ -15,7 +15,7 @@ export const checkAuth = async (req, res, next) => {
     }
     const decoded = jwt.verify(token, SECRET_KEY);
     console.log("decoded token", decoded);
-    const user = await userDao.getById(decoded.userId);
+    const user = await userDao.getById(decoded.idUser);
     if (!user) {
       return httpResponse.UNAUTHORIZED(res, "Error token");
     }
@@ -23,6 +23,5 @@ export const checkAuth = async (req, res, next) => {
     next();
   } catch (error) {
     console.log(error);
-    return httpResponse.UNAUTHORIZED(res, "Error token");
   }
 };

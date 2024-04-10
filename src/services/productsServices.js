@@ -14,16 +14,16 @@ export default class ProductServices extends Services {
   create = async (data, email) => {
     try {
       data.owner = email;
-      const product = await productDao.create(data);
-      return product;
+      const newProduct = await productDao.create(data);
+      return newProduct;
     } catch (error) {
       throw new Error(error);
     }
   };
 
-  getProduct = async (id) => {
+  getProductById = async (id) => {
     try {
-      const product = await productRepository.getProduct(id);
+      const product = await productRepository.getProductById(id);
       return product || false;
     } catch (error) {
       throw new Error(error);
@@ -32,13 +32,13 @@ export default class ProductServices extends Services {
 
   delete = async (id) => {
     try {
-      let product = await this.dao.getProduct(id);
+      let product = await this.dao.getById(id);
       const user = await userDao.getByEmail(product.owner);
-      if (!item) {
+      if (!product) {
         return false;
       } else {
         const deletedProduct = await this.dao.delete(id);
-        await sendMail(user, deletedProduct);
+        await sendMail(user, "deletedProduct");
         return deletedProduct;
       }
     } catch (error) {

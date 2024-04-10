@@ -14,6 +14,10 @@ export const ProductSchema = new Schema({
     type: Number,
     required: true,
   },
+  status: {
+    type: Boolean,
+    default: true,
+  },
   stock: {
     type: Number,
     required: true,

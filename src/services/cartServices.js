@@ -8,103 +8,90 @@ export default class CartServices extends Services {
     super(cartDao);
   }
 
-  create = async (cart, email) => {
+  createCart = async (cart, email) => {
     try {
       cart.owner = email;
-      const newCart = await cartDao.create(cart);
+      const newCart = await cartDao.createCart(cart);
       return newCart;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 
-  getAll = async (email) => {
+  getAllCarts = async (email) => {
     try {
-      const carts = await cartDao.getAll(email);
+      const carts = await cartDao.getAllCarts(email);
       return !carts ? false : carts;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 
-  delete = async (id, email) => {
+  getCartById = async (idCart, email) => {
     try {
-      const cart = await cartDao.getById(id);
-      if (!cart || cart.owner !== email) {
-        return false;
-      }
-      const deletedCart = await cartDao.delete(id);
-      return deletedCart;
-    } catch (error) {
-      throw new Error(error);
-    }
-  };
-
-  getById = async (id, email) => {
-    try {
-      const cart = await cartDao.getById(id);
+      const cart = await cartDao.getCartById(idCart);
       if (!cart || cart.owner !== email) {
         return false;
       }
       return cart;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 
-  addProductToCart = async (cartId, productId, email) => {
+  addProductToCart = async (idCart, idProduct, email) => {
     try {
-      const cartExists = await cartDao.getById(cartId);
+      const cartExists = await cartDao.getCartById(idCart);
       if (!cartExists || cartExists.owner !== email) return false;
-      const productExists = await productDao.getById(productId);
+      const productExists = await productDao.getProductById(idProduct);
       if (!productExists) return false;
       const productExistsInCart = cartExists.products.find((p) => {
-        return p.product._id.toString() === productId.toString();
+        return p.product._id.toString() === idProduct.toString();
       });
       if (productExistsInCart) {
         productExistsInCart.quantity++;
         cartExists.save();
-        const updatedCart = await cartDao.getById(cartId);
+        const updatedCart = await cartDao.getById(idCart);
         return updatedCart;
       } else {
         const updatedCart = await cartDao.addProductToCart(
           cartExists,
-          productId
+          idProduct
         );
         return updatedCart;
       }
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 
-  removeProductToCart = async (cartId, productId, email) => {
+  removeProductToCart = async (idCart, idProduct, email) => {
     try {
-      const cartExists = await cartDao.getById(cartId);
+      const cartExists = await cartDao.getCartById(idCart);
       if (!cartExists || cartExists.owner !== email) return false;
-      const productExists = await productDao.getById(productId);
+      const productExists = await productDao.getProductById(idProduct);
       if (!productExists) return false;
       const productExistsInCart = cartExists.products.find(
-        (p) => p.product._id.toString() === productId.toString()
+        (p) => p.product._id.toString() === idProduct.toString()
       );
       if (productExistsInCart && productExistsInCart.quantity > 0) {
         productExistsInCart.quantity--;
         await cartExists.save();
         return productExistsInCart;
       }
-      return await cartDao.removeProductToCart(cartExists, productId);
+      return await cartDao.removeProductToCart(cartExists, idProduct);
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 
-  updateProductQuantity = async (cartId, productId, quantity) => {
+  updateProductQuantity = async (idCart, idProduct, quantity) => {
     try {
-      const cartExists = await cartDao.getById(cartId);
+      const cartExists = await cartDao.getCartById(idCart);
       if (!cartExists) return false;
 
       const productExists = cartExists.products.find(
-        (p) => p.product._id.toString() === productId.toString()
+        (p) => p.product._id.toString() === idProduct.toString()
       );
       if (!productExists) return false;
       return await cartDao.updateProductQuantity(
@@ -113,19 +100,19 @@ export default class CartServices extends Services {
         quantity
       );
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 
-  clearCart = async (cartId, email) => {
+  clearCart = async (idCart, email) => {
     try {
-      const cartExists = await cartDao.getById(cartId);
+      const cartExists = await cartDao.getCartById(idCart);
       if (!cartExists || cartExists.owner !== email) {
         return false;
       }
       return await cartDao.clearCart(cartExists);
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 }

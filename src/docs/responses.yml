@@ -1,100 +1,337 @@
 components:
   schema:
     Users:
-      CreateUser:
+      NewUser:
         type: object
         properties:
-          id:
-            type: string
-            description: User id
-          firstName:
-            type: string
-            description: User first name
-          lastName:
-            type: string
-            description: User last name
-          email:
-            type: string
-            description: User email
-          age:
+          status:
             type: number
-            description: User age
-          password:
+            description: Status code
+          message:
             type: string
-            description: User password
-          role:
+            description: Status message
+          data:
+            type: object
+            properties:
+              firstName:
+                type: string
+                description: User first name
+              lastName:
+                type: string
+                description: User last name
+              email:
+                type: string
+                description: User email
+              password:
+                type: string
+                description: User password
+              age:
+                type: number
+                description: User age
+              role:
+                type: string
+                description: User role
+              isGoogle:
+                type: string
+                description: Register with google
+              id:
+                type: string
+                description: User id
+      LoginUser:
+        type: object
+        properties:
+          status:
+            type: number
+            description: Status code
+          message:
             type: string
-            description: User role
-          isGithub:
-            type: boolean
-            description: User has Github
-          isGoogle:
-            type: boolean
-            description: User has Google
-          lastConnection:
+            description: Status message
+          data:
+            type: object
+            properties:
+              token:
+                type: string
+                description: User token
+              idUser:
+                type: string
+                description: User id
+      ProfileUser:
+        type: object
+        properties:
+          status:
+            type: number
+            description: Status code
+          message:
             type: string
-            description: User last connection
+            description: Status message
+          data:
+            type: object
+            description: User data
+            properties:
+              firstName:
+                type: string
+                description: User first name
+              lastName:
+                type: string
+                description: User last name
+              email:
+                type: string
+                description: User email
+              password:
+                type: string
+                description: User password
+              age:
+                type: number
+                description: User age
+              role:
+                type: string
+                description: User role
         example:
-          id: 6ec0b0d5-2a9c-4c6b-9a8a-9c6b9a8a9c6b
-          firstName: "John"
-          lastName: "Doe"
-          email: "john@doe.com"
-          age: 25
-          password: "password"
-          role: "user"
-          isGithub: false
-          isGoogle: false
-          lastConnection: "2022-01-01T00:00:00.000Z"
-      GetAllUsers:
-        type: array
-        items:
-          properties:
-            id:
-              type: string
-              description: User id
-            firstName:
-              type: string
-              description: User first name
-            lastName:
-              type: string
-              description: User last name
-            email:
-              type: string
-              description: User email
-            age:
-              type: number
-              description: User age
-            password:
-              type: string
-              description: User password
-            role:
-              type: string
-              description: User role
-            isGithub:
-              type: boolean
-              description: User has Github
-            isGoogle:
-              type: boolean
-              description: User has Google
-            lastConnection:
-              type: string
-              description: User last connection
-          example:
-            id: 6ec0b0d5-2a9c-4c6b-9a8a-9c6b9a8a9c6b
-            firstName: "John"
-            lastName: "Doe"
-            email: "john@doe.com"
+          status: 200
+          message: Success
+          data:
+            firstName: John
+            lastName: Doe
+            email: john@doe.com
+            password: pass
             age: 25
-            password: "password"
-            role: "user"
-            isGithub: false
-            isGoogle: false
-            lastConnection: "2022-01-01T00:00:00.000Z"
+            role: user
+      GetAllUsers:
+        type: object
+        properties:
+          status:
+            type: string
+            description: Status code
+          message:
+            type: string
+            description: Status message
+          data:
+            type: array
+            description: Users data
+            items:
+              properties:
+                firstName:
+                  type: string
+                  description: User first name
+                lastName:
+                  type: string
+                  description: User last name
+                email:
+                  type: string
+                  description: User email
+                password:
+                  type: string
+                  description: User password
+                age:
+                  type: number
+                  description: User age
+                role:
+                  type: string
+                  description: User role
+                lastConnection:
+                  type: string
+                  description: User last connection
+                  format: date-time
+    Products:
+      GetAllProducts:
+        type: object
+        properties:
+          status:
+            type: string
+            description: Status code
+          message:
+            type: string
+            description: Status message
+          data:
+            type: array
+            description: Products data
+            items:
+              properties:
+                title:
+                  type: string
+                  description: Product title
+                description:
+                  type: string
+                  description: Product description
+                price:
+                  type: number
+                  description: Product price
+                stock:
+                  type: number
+                  description: Product stock
+                category:
+                  type: string
+                  description: Product category
+      Product:
+        type: object
+        properties:
+          status:
+            type: string
+            description: Status code
+          message:
+            type: string
+            description: Status message
+          data:
+            type: object
+            properties:
+              title:
+                type: string
+                description: Product title
+              description:
+                type: string
+                description: Product description
+              price:
+                type: number
+                description: Product price
+              stock:
+                type: number
+                description: Product stock
+              category:
+                type: string
+                description: Product category
+              _id:
+                type: string
+                description: Product id
+    Carts:
+      GetAllCarts:
+        type: object
+        properties:
+          status:
+            type: string
+            description: Status code
+          message:
+            type: string
+            description: Status message
+          data:
+            type: array
+            description: Carts data
+            items:
+              properties:
+                id:
+                  type: string
+                  description: Cart id
+                owner:
+                  type: string
+                  description: Cart owner
+                products:
+                  type: array
+                  description: Cart products
+                  items:
+                    properties:
+                      id:
+                        type: string
+                        description: Product id
+                      quantity:
+                        type: number
+                        description: Product quantity
+      Cart:
+        type: object
+        properties:
+          status:
+            type: string
+            description: Status code
+          message:
+            type: string
+            description: Status message
+          data:
+            type: object
+            description: Cart data
+            properties:
+              id:
+                type: string
+                description: Cart id
+              owner:
+                type: string
+                description: Cart owner
+              products:
+                type: array
+                description: Cart products
+                items:
+                  properties:
+                    id:
+                      type: string
+                      description: Product id
+                    quantity:
+                      type: number
+                      description: Product quantity
+      ClearCart:
+        type: object
+        properties:
+          status:
+            type: string
+            description: Status code
+          message:
+            type: string
+            description: Status message
+          data:
+            type: string
+            description: Cart cleared
+    Tickets:
+      Ticket:
+        type: object
+        properties:
+          status:
+            type: string
+            description: Status code
+          message:
+            type: string
+            description: Status message
+          data:
+            type: object
+            description: Ticket data
+            properties:
+              id:
+                type: string
+                description: Ticket id
+              code:
+                type: string
+                description: Ticket code
+              purchaseDatetime:
+                type: string
+                description: Ticket purchase datetime
+              amount:
+                type: number
+                description: Ticket amount
+              purchaser:
+                type: string
+                description: Ticket purchaser
+    Errors:
+      ValidationSchemaError:
+        type: object
+        properties:
+          status:
+            type: number
+            description: Status code
+          message:
+            type: string
+            description: Status message
+          error:
+            type: string
+            description: Validation error
       NotFound:
         type: object
         properties:
+          status:
+            type: number
+            description: Status code
           message:
             type: string
-            description: Error message
-        example:
-          message: "User not found"
+            description: Status message
+          error:
+            type: string
+            description: Not found
+      UnauthorizedError:
+        type: object
+        properties:
+          status:
+            type: number
+            description: Status code
+          message:
+            type: string
+            description: Status message
+          error:
+            type: string
+            description: Unauthorized
+
+        
+          

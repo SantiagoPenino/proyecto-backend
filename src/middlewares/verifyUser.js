@@ -10,17 +10,16 @@ const httpResponse = new HttpResponse();
 export const verifyUser = async (req, res, next) => {
   try {
     const token = req.cookies.token;
-    const decoded = Jwt.verify(token, SECRET_KEY);
-    console.log("decoded token", decoded);
-    const user = await userDao.getById(decoded.userId);
-    if (user && (user.role === "admin" || user.role === "premium")) {
+    const decode = Jwt.verify(token, SECRET_KEY);
+    console.log("decode token", decode);
+    const user = await userDao.getById(decode.idUser);
+    if (user && user.role === "admin" || user.role === "premium") {
       req.user = user;
       next();
     } else {
-      return httpResponse.UNAUTHORIZED(res, 'Error getting user');
+      return httpResponse.UNAUTHORIZED(res, "Error getting user");
     }
   } catch (error) {
-    console.log(error);
-    return httpResponse.UNAUTHORIZED(res, 'Error getting user');
+    console.log(error)
   }
 };

@@ -9,16 +9,8 @@ router.get("/", checkAuth, controllers.getAll);
 router.get("/:id", checkAuth, controllers.getById);
 router.post("/", checkAuth, controllers.create);
 router.delete("/:id", checkAuth, controllers.delete);
-router.post(
-  "/:idCart/products/:idProduct",
-  checkAuth,
-  controllers.addProductToCart
-);
-router.delete(
-  "/:idCart/products/:idProduct",
-  checkAuth,
-  controllers.removeProductToCart
-);
-router.delete("/empty/:idCart", checkAuth, controllers.clearCart);
+router.post("/:cartId/products/:productId", checkAuth, controllers.addProductToCart);
+router.delete("/:cartId/products/:productId", checkAuth, controllers.removeProductToCart);
+router.delete("/empty/:cartId", checkAuth, controllers.clearCart);
 
 export default router;

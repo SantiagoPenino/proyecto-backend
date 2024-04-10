@@ -1,6 +1,7 @@
 import { Schema, model } from "mongoose";
 
 export const cartCollection = "carts";
+
 export const CartSchema = new Schema({
   owner: {
     type: String,

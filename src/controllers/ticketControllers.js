@@ -12,8 +12,8 @@ export default class TicketControllers extends Controllers {
   generateTicket = async (req, res, next) => {
     try {
       const { _id } = req.user;
-      const { cartId } = req.params;
-      const data = await ticketServices.newTicket(_id, cartId);
+      const { idCart } = req.params;
+      const data = await ticketServices.newTicket(_id, idCart);
       return !data
         ? httpResponse.NOT_FOUND(res, "Error generating ticket")
         : httpResponse.OK(res, data);

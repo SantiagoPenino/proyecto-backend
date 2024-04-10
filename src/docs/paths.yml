@@ -1,24 +1,652 @@
 paths:
-  /users:
+  /api/users/register:
     post:
       tags: Users
-      summary: New user register
+      summary: Register new user
       requestBody:
         content:
           application/json:
             schema:
               $ref: "#/components/parameters/schema/NewUser"
-        required: true
         responses:
           200:
-            description: User created
+            description: Register successful
             content:
               application/json:
                 schema:
                   $ref: "#/components/schema/Users/CreateUser"
-          403:
-            description: User already exists
+          404:
+            description: Validation error
             content:
               application/json:
                 schema:
-                  $ref: "#/components/schemas/Users/NotFound"
+                  $ref: "#/components/schemas/Errors/ValidationSchemaError"
+          500:
+            description: Internal server error
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/NotFound"
+  /api/users/login:
+    post:
+      tags: Users
+      summary: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/parameters/schema/LoginUser"
+        responses:
+          200:
+            description: Login successful
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schema/Users/LoginUser"
+          401:
+            description: Unauthorized
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/UnauthorizedError"
+          404:
+            description: Validation error
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/ValidationSchemaError"
+          500:
+            description: Internal server error
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/NotFound"
+  /api/users/profile-cookie:
+    get:
+      tags: Users
+      summary: Get user profile
+      responses:
+        200:
+          description: Get user profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/Users/ProfileUser"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/NotFound"
+  /api/users/all:
+    get:
+      tags: Users
+      summary: Get all users
+      responses:
+        200:
+          description: Get all users
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/Users/GetAllUsers"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/NotFound"
+      security:
+        - bearerAuth: []
+  /api/users/delete:
+    delete:
+      tags: Users
+      summary: Delete user
+      responses:
+        200:
+          description: Delete user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/Users/GetAllUsers"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/NotFound"
+      security:
+        - bearerAuth: []
+  /api/users/profile-img:
+    post:
+      tags: Users
+      summary: Upload profile image
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                profile:
+                  type: string
+                  format: binary
+                  description: Profile image
+      responses:
+        200:
+          description: Image uploaded successfully
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schema/Users/ProfileUser"
+        401:
+          description: Unauthorized
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/NotFound"
+  /api/products/:
+    get:
+      tags: Products
+      summary: Get all products
+      responses:
+        200:
+          description: Get all products
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schema/Products/GetAllProducts"
+        401:
+          description: Unauthorized
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/NotFound"
+    post:
+      tags: Products
+      summary: Create new product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/parameters/schema/BodyProduct"
+      responses:
+        200:
+          description: Product created successfully
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schema/Products/Product"
+        401:
+          description: Unauthorized
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/NotFound"
+  /api/products/{id}:
+    get:
+      tags: Products
+      summary: Get product by id
+      parameters:
+        in: path
+        name: id
+        required: true
+        description: Product id
+        schema:
+          type: string
+      responses:
+        200:
+          description: Product found
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schema/Products/Product"
+        401:
+          description: Unauthorized
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/NotFound"
+    put:
+      tags: Products
+      summary: Update product
+      parameter:
+        in: path
+        name: id
+        required: true
+        description: Product id
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/parameters/schema/BodyProduct"
+      responses:
+        200:
+          description: Product updated successfully
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schema/Products/Product"
+        401:
+          description: Unauthorized
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Errors/NotFound"
+    delete:
+      tags: Products
+      summary: Delete product
+      parameters:
+        in: path
+        name: id
+        required: true
+        description: Product id
+        schema:
+          type: string
+      responses:
+        200:
+         description: Product deleted successfully
+         content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/Products/Product"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/NotFound"
+  /api/carts/:
+    get:
+      tags: Carts
+      summary: Get all carts
+      responses:
+        200:
+          description: Carts found
+          content:
+            application/json: 
+              schema:
+                $ref: "#/components/schema/Carts/GetAllCarts"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/NotFound"
+    post:
+      tags: Carts
+      summary: Create cart
+      responses:
+        200:
+          description: Cart created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/Carts/CreateCart"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/NotFound"
+  /api/carts/{id}:
+    delete:
+      tags: Carts
+      summary: Delete cart
+      parameters:
+        in: path
+        name: id
+        required: true
+        description: Cart id
+        schema:
+          type: string
+      responses:
+        200:
+          description: Cart deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/Carts/DeleteCart"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/NotFound"
+    get:
+      tags: Carts 
+      summary: Get cart by id
+      parameters:
+        in: path
+        name: id
+        required: true
+        description: Cart id
+        schema:
+          type: string
+      responses:
+        200:
+          description: Cart found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/Carts/Cart"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/NotFound"
+  /api/carts/{idCart}/products/{idProduct}:
+    post:
+      tags: Carts
+      summary: Add product to cart
+      parameters:
+        in: path
+        name: idCart
+        required: true
+        description: Cart id
+        schema:
+          type: string
+        in: path
+        name: idProduct
+        required: true
+        description: Product id
+        schema:
+          type: string
+      responses:
+        200:
+          description: Product added to cart successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/Carts/AddProductToCart"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/NotFound"
+    delete:
+      tags: Carts
+      summary: Remove product from cart
+      parameters:
+        in: path
+        name: idCart
+        required: true
+        description: Cart id
+        schema:
+          type: string
+        in: path
+        name: idProduct
+        required: true
+        description: Product id
+        schema:
+          type: string
+      responses:
+        200:
+          description: Product removed from cart successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/Carts/Cart"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/NotFound"
+  /api/carts/clear/{idCart}:
+    delete:
+      tags: Carts
+      summary: Clear cart
+      parameters:
+        in: path
+        name: idCart
+        required: true
+        description: Cart id
+        schema:
+          type: string
+      responses:
+        200:
+          description: Cart cleared successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/Carts/Cart"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/NotFound"
+  /api/tickets/{idCart}:
+    post:
+      tags: Tickets
+      summary: Generate ticket
+      parameters:
+        in: path
+        name: idCart
+        required: true
+        description: Cart id
+        schema:
+          type: string
+      responses:
+        200:
+          description: Ticket generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schema/Tickets/Ticket"
+        401:
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/UnauthorizedError"
+        404:
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/ValidationSchemaError"
+        500:
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Errors/NotFound"        
+

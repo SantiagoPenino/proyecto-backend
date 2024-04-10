@@ -4,16 +4,16 @@ import { sendMail } from "./mailingServices.js";
 
 const { userDao } = persistence;
 
-export default class UserServices extends Services {
+export default class userModel extends Services {
   constructor() {
     super(userDao);
   }
 
   register = async (user) => {
     try {
-      const response = await userDao.register(user);
+      const newUser = await userDao.register(user);
       await sendMail(user, "register");
-      return response;
+      return newUser;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -21,8 +21,13 @@ export default class UserServices extends Services {
 
   login = async (user) => {
     try {
-      const userExists = await userDao.login(user);
-      return userExists;
+      const { token, idUser } = await userDao.login(user);
+      if (token && idUser) {
+        await this.lastConnection(idUser);
+        return { token, idUser };
+      } else {
+        return false;
+      }
     } catch (error) {
       throw new Error(error.message);
     }
@@ -33,7 +38,7 @@ export default class UserServices extends Services {
       const token = await this.dao.resetPassword(user);
       return token ? await sendMail(user, "resetPassword", token) : false;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 
@@ -42,25 +47,25 @@ export default class UserServices extends Services {
       const response = await this.dao.updatePassword(user, password);
       return response || false;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
-  lastConnection = async (userId) => {
+  lastConnection = async (idUser) => {
     try {
-      await userDao.lastConnection(userId);
+      await userDao.lastConnection(idUser);
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
   deleteInactive = async () => {
     try {
-      const inactiveUsers = await userDao.removeInactive();
+      const inactiveUsers = await userDao.deleteInactive();
       inactiveUsers.forEach((user) => {
         sendMail(user, "removeInactive");
       });
       return inactiveUsers;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 }

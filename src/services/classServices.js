@@ -5,8 +5,8 @@ export default class Services {
 
   getAll = async () => {
     try {
-      const items = await this.dao.getAll();
-      return !items ? false : items;
+      const data = await this.dao.getAll();
+      return !data ? false : data;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -14,8 +14,8 @@ export default class Services {
 
   getById = async (id) => {
     try {
-      const item = await this.dao.getById(id);
-      return !item ? false : item;
+      const data = await this.dao.getById(id);
+      return !data ? false : data;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -23,8 +23,8 @@ export default class Services {
 
   create = async (obj) => {
     try {
-      const item = await this.dao.create(obj);
-      return !item ? false : item;
+      const newObj = await this.dao.create(obj);
+      return !newObj ? false : newObj;
     } catch (error) {
       throw new Error(error.message);
     }
@@ -32,8 +32,13 @@ export default class Services {
 
   update = async (id, obj) => {
     try {
-      let item = await this.dao.getById(id);
-      return !item ? false : await this.dao.update(id, obj);
+      const data = await this.dao.getById(id);
+      if (!data) {
+        return false;
+      } else {
+        const updateObj = await this.dao.update(id, obj);
+        return updateObj;
+      }
     } catch (error) {
       throw new Error(error.message);
     }
@@ -41,8 +46,13 @@ export default class Services {
 
   delete = async (id) => {
     try {
-      let item = await this.dao.getById(id);
-      return !item ? false : await this.dao.delete(id);
+      const data = await this.dao.getById(id);
+      if (!data) {
+        return false;
+      } else {
+        const deleteObj = await this.dao.delete(id);
+        return deleteObj;
+      }
     } catch (error) {
       throw new Error(error.message);
     }

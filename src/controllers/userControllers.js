@@ -12,10 +12,10 @@ export default class UserControllers extends Controllers {
 
   register = async (req, res, next) => {
     try {
-      const data = await userServices.register(req.body);
-      return !data
+      const newUser = await userServices.register(req.body);
+      return !newUser
         ? httpResponse.FORBIDDEN(res, "Error creating user")
-        : httpResponse.OK(res, data);
+        : httpResponse.OK(res, newUser);
     } catch (error) {
       next(error.message);
     }
@@ -23,15 +23,15 @@ export default class UserControllers extends Controllers {
 
   login = async (req, res, next) => {
     try {
-      const data = await userServices.login(req.body);
-      if (!data) {
-        return httpResponse.UNAUTHORIZED(res, "Error login");
+      const { token, idUser } = await userServices.login(req.body);
+      if (!token || !idUser) {
+        return httpResponse.UNAUTHORIZED(res, "Error logging in");
       } else {
-        res.cookie("token", data.token, {
+        res.cookie("token", token, {
           httpOnly: true,
         });
-        res.header("Authorization", `Bearer ${data.token}`);
-        return httpResponse.OK(res, data);
+        res.header("Authorization", `Bearer ${token}`);
+        return httpResponse.OK(res, { token, idUser });
       }
     } catch (error) {
       next(error.message);
@@ -40,10 +40,8 @@ export default class UserControllers extends Controllers {
 
   profile = async (req, res, next) => {
     try {
-      const { _id } = req.user;
-      const user = await userServices.getUserById(_id);
-      if (!user) return false;
-      return httpResponse.OK(res, user);
+      const { firstName, lastName, email, role } = req.user;
+      return httpResponse.OK(res, { firstName, lastName, email, role });
     } catch (error) {
       next(error.message);
     }

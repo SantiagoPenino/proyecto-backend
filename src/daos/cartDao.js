@@ -6,38 +6,38 @@ export default class CartDao extends MongoDao {
     super(CartModel);
   }
 
-  create = async (cart) => {
+  createCart = async (cart) => {
     try {
-      const response = await this.model.create(cart);
-      return response;
+      const newCart = await CartModel.createCart(cart);
+      return newCart;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 
-  getAll = async (email) => {
+  getAllCarts = async (email) => {
     try {
-      const response = await this.model.find({ email });
-      return response;
+      const carts = await CartModel.find({ owner: email });
+      return carts;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 
-  addProductToCart = async (cartExists, itemId) => {
+  addProductToCart = async (cartExists, idProduct) => {
     try {
-      const newProduct = {
+      const product = {
         quantity: 1,
-        product: itemId,
+        product: idProduct,
       };
-      cartExists.products.push(newProduct);
+      cartExists.products.push(product);
       await this.model.updateOne({ _id: cartExists._id }, cartExists);
-      const response = await CartModel.find({
+      const cart = await CartModel.find({
         _id: cartExists._id,
       });
-      return response;
+      return cart;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 

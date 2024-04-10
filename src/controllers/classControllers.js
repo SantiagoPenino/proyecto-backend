@@ -11,7 +11,7 @@ export default class Controllers {
     try {
       const data = await this.services.getAll();
       return !data
-        ? httpResponse.INTERNAL_SERVER_ERROR(res, "Error getting items")
+        ? httpResponse.INTERNAL_SERVER_ERROR(res, "Error getting data")
         : httpResponse.OK(res, data);
     } catch (error) {
       next(error.message);
@@ -23,7 +23,7 @@ export default class Controllers {
       const { id } = req.params;
       const data = await this.services.getById(id);
       return !data
-        ? httpResponse.NOT_FOUND(res, "Error getting item")
+        ? httpResponse.NOT_FOUND(res, "Error getting data")
         : httpResponse.OK(res, data);
     } catch (error) {
       next(error.message);
@@ -34,7 +34,7 @@ export default class Controllers {
     try {
       const data = await this.services.create(req.body);
       return !data
-        ? httpResponse.NOT_FOUND(res, "Error creating item")
+        ? httpResponse.NOT_FOUND(res, "Error creating data")
         : httpResponse.OK(res, data);
     } catch (error) {
       next(error.message);
@@ -46,10 +46,10 @@ export default class Controllers {
       const { id } = req.params;
       const data = await this.services.getById(id);
       if (!data) {
-        return httpResponse.NOT_FOUND(res, "Error updating item");
+        return httpResponse.NOT_FOUND(res, "Error updating data");
       } else {
-        const itemUpdated = await this.services.update(id, req.body);
-        return httpResponse.OK(res, itemUpdated);
+        const dataUpdated = await this.services.update(id, req.body);
+        return httpResponse.OK(res, dataUpdated);
       }
     } catch (error) {
       next(error.message);
@@ -61,10 +61,10 @@ export default class Controllers {
       const { id } = req.params;
       const data = await this.services.getById(id);
       if (!data) {
-        return httpResponse.NOT_FOUND(res, "Error deleting item");
+        return httpResponse.NOT_FOUND(res, "Error deleting data");
       } else {
-        const itemRemoved = await this.services.delete(id);
-        return httpResponse.OK(res, itemRemoved);
+        const dataRemoved = await this.services.delete(id);
+        return httpResponse.OK(res, dataRemoved);
       }
     } catch (error) {
       next(error.message);

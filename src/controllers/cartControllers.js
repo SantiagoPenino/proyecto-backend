@@ -10,13 +10,40 @@ export default class CartControllers extends Controllers {
     super(cartServices);
   }
 
+  createCart = async (req, res, next) => {
+    try {
+      const { email } = req.user;
+      const newCart = await cartServices.createCart(req.body, email);
+      return httpResponse.OK(res, newCart);
+    } catch (error) {
+      next(error.message);
+    }
+  };
+
+  getAllCarts = async (req, res, next) => {
+    try {
+      const { email } = req.user;
+      const carts = await cartServices.getAll(email);
+      return carts.length === 0
+        ? httpResponse.NOT_FOUND(res, "Cart not found")
+        : httpResponse.OK(res, carts);
+    } catch (error) {
+      next(error.message);
+    }
+  };
+
   addProductToCart = async (req, res, next) => {
     try {
-      const { cartId, productId } = req.params;
-      const data = await cartServices.addProductToCart(cartId, productId);
-      return !data
+      const { email } = req.user;
+      const { idCart, idProduct } = req.params;
+      const product = await cartServices.addProductToCart(
+        idCart,
+        idProduct,
+        email
+      );
+      return !product
         ? httpResponse.NOT_FOUND(res, "Error adding product to cart")
-        : httpResponse.OK(res, data);
+        : httpResponse.OK(res, product);
     } catch (error) {
       next(error.message);
     }
@@ -24,40 +51,32 @@ export default class CartControllers extends Controllers {
 
   removeProductToCart = async (req, res, next) => {
     try {
-      const { cartId, productId } = req.params;
-      const data = await cartServices.removeProductToCart(cartId, productId);
-      return !data
+      const { idCart, idProduct } = req.params;
+      const { email } = req.user;
+      const product = await cartServices.removeProductToCart(
+        idCart,
+        idProduct,
+        email
+      );
+      return !product
         ? httpResponse.NOT_FOUND(res, "Error removing product from cart")
-        : httpResponse.OK(res, data);
+        : httpResponse.OK(res, product);
     } catch (error) {
       next(error.message);
     }
   };
-  updateProductQuantityToCart = async (req, res, next) => {
+  updateProductQuantity = async (req, res, next) => {
     try {
-      const { cartId, productId } = req.params;
+      const { idCart, idProduct } = req.params;
       const { quantity } = req.body;
-      const data = await cartServices.updateProductQuantityToCart(
-        cartId,
-        productId,
+      const product = await cartServices.updateProductQuantity(
+        idCart,
+        idProduct,
         quantity
       );
-      return !data
+      return !product
         ? httpResponse.NOT_FOUND(res, "Error updating product quantity in cart")
-        : httpResponse.OK(res, data);
-    } catch (error) {
-      next(error.message);
-    }
-  };
-
-  updateCart = async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const { products } = req.body;
-      const data = await cartServices.updateCart(id, products);
-      return !data
-        ? httpResponse.NOT_FOUND(res, "Error updating cart")
-        : httpResponse.OK(res, data);
+        : httpResponse.OK(res, product);
     } catch (error) {
       next(error.message);
     }
@@ -65,11 +84,12 @@ export default class CartControllers extends Controllers {
 
   clearCart = async (req, res, next) => {
     try {
-      const { cartId } = req.params;
-      const emptyCart = await cartServices.clearCart(cartId);
-      return !emptyCart
+      const { idCart } = req.params;
+      const { email } = req.user;
+      const cart = await cartServices.clearCart(idCart, email);
+      return !cart
         ? httpResponse.NOT_FOUND(res, "Error emptying cart")
-        : httpResponse.OK(res, emptyCart);
+        : httpResponse.OK(res, cart);
     } catch (error) {
       next(error.message);
     }

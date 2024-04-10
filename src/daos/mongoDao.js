@@ -5,39 +5,44 @@ export default class MongoDao {
 
   create = async (obj) => {
     try {
-      return await this.model.create(obj);
+      const newObj = await this.model.create(obj);
+      return newObj;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
   getAll = async () => {
     try {
-      return await this.model.find();
+      const data = await this.model.find({});
+      return data;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 
   getById = async (id) => {
     try {
-      return await this.model.findById(id);
+      const data = await this.model.findById(id);
+      return data;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
   update = async (id, obj) => {
     try {
-      return await this.model.findByIdAndUpdate(id, obj, { new: true });
+      const data = await this.model.findByIdAndUpdate(id, obj, { new: true });
+      return data;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 
   delete = async (id) => {
     try {
-      return await this.model.findByIdAndDelete({ id });
+      const data = await this.model.findByIdAndDelete(id);
+      return data;
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 }

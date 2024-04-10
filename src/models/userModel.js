@@ -27,10 +27,6 @@ const UserSchema = new Schema({
     type: String,
     default: "user",
   },
-  isGithub: {
-    type: Boolean,
-    default: false,
-  },
   isGoogle: {
     type: Boolean,
     default: false,
